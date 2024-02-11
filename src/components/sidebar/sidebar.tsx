@@ -19,7 +19,7 @@ function Sidebar(props:Props) {
         <aside className={"h-screen w-max sticky top-0 left-0"}>
             <nav className={"h-full flex flex-col  border-r shadow-sm "}>
 
-                <div className={`h-[8.3%] border-b p-4 pb-2 flex justify-between items-center ${expanded ? "w-full" : "w-max"}`}>
+                <div className={`h-[8.3%]  p-4 pb-2 flex justify-between items-center ${expanded ? "w-full" : "w-max"}`}>
 
                     <img
                         src={"src/assets/images/logo/NextGen_Logo.png"}

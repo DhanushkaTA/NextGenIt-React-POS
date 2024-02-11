@@ -56,12 +56,12 @@ function Header(props:Props){
 
 
                 <div className={"flex flex-row"}>
-                    <div className={"flex flex-row cursor-pointer p-1 rounded-lg bg-gray-100 mr-3"}>
+                    <div className={"flex flex-row cursor-pointer p-1 rounded-lg bg-gray-100 mr-3 text-sm"}>
                         <BiCalendar size={22} className={"mr-1"}/>
                         {date}
                     </div>
 
-                    <div className={"flex flex-row cursor-pointer p-1 rounded-lg bg-gray-100 mr-3"}>
+                    <div className={"flex flex-row cursor-pointer p-1 rounded-lg bg-gray-100 mr-3 text-sm"}>
                         <BiTimeFive size={22} className={"mr-1"}/>
                         {time}
                     </div>
