@@ -22,7 +22,7 @@ function Input(props:Props){
     }, []);
 
     return (
-        <div className={"flex flex-col w-full font-Poppins"}>
+        <div className={"flex flex-col w-full font-Euclid"}>
             <label htmlFor={props.id}
             className={"w-full text-[12px] font-medium text-[#2e2e2e]"}>
                 {props.label} {props.required ? <span className="text-red-700">*</span> : null}

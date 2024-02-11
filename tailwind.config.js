@@ -10,6 +10,8 @@ export default {
         Lex:['Lexend'],
         Poppins:['Poppins'],
         Zet:['Lexend Zetta'],
+        Nunito:['Nunito'],
+        Euclid:['Euclid Circular A']
       },
       dropShadow: {
         '3': 'rgba(0, 0, 0, 0.35) 0px 5px 15px',
