@@ -5,7 +5,7 @@ interface Props {
     id:string,
     type:string,
     placeholder?:string,
-    label:string,
+    label?:string,
     required: boolean,
     icon?:any,
     callBack: Function;

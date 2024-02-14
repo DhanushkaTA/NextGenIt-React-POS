@@ -1,10 +1,12 @@
 import {
-    BiCalendar,
+    // BiCalendar,
     BiMenu,
-    BiSolidChevronDown,
-    BiTimeFive
+    BiSolidChevronDown
+    // BiTimeFive
 } from "react-icons/bi";
 import {useEffect, useState} from "react";
+// import {FiCalendar} from "react-icons/fi";
+import {CiCalendarDate, CiClock2} from "react-icons/ci";
 // import SidebarContext from "./context/contexts"
 
 interface Props {
@@ -57,12 +59,12 @@ function Header(props:Props){
 
                 <div className={"flex flex-row"}>
                     <div className={"flex flex-row cursor-pointer p-1 rounded-lg bg-gray-100 mr-3 text-sm"}>
-                        <BiCalendar size={22} className={"mr-1"}/>
+                        <CiCalendarDate size={22} className={"mr-1"}/>
                         {date}
                     </div>
 
                     <div className={"flex flex-row cursor-pointer p-1 rounded-lg bg-gray-100 mr-3 text-sm"}>
-                        <BiTimeFive size={22} className={"mr-1"}/>
+                        <CiClock2 size={22} className={"mr-1"}/>
                         {time}
                     </div>
                 </div>

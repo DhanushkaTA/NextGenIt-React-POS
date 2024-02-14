@@ -1,10 +1,13 @@
 import SidebarContext from "../context/contexts.ts";
 import Sidebar from "../components/sidebar/sidebar.tsx";
 import SidebarItem from "../components/sidebarItems/sidebarItem.tsx";
-import {BiSolidDashboard, BiSolidGroup, BiSolidPieChartAlt2} from "react-icons/bi";
+import UserView from "./userView.tsx";
+// import {BiSolidDashboard, BiSolidGroup, BiSolidPieChartAlt2} from "react-icons/bi";
 import Header from "../components/header/header.tsx";
-import Card from "../components/card/card.tsx";
+// import Card from "../components/card/card.tsx";
 import {useState} from "react";
+import {FiCpu} from "react-icons/fi";
+import {CiBoxes, CiGrid42, CiUser, CiWavePulse1} from "react-icons/ci";
 
 
 function AdminView(){
@@ -30,21 +33,29 @@ function AdminView(){
                             [
                                 <SidebarItem
                                     text={"Dashboard"}
-                                    icon={<BiSolidDashboard size={20}/>}
-                                    active
+                                    // icon={<BiSolidDashboard size={20}/>}
+                                    icon={<CiGrid42 size={20}/>}
 
                                 />,
 
                                 <SidebarItem
                                     text={"User"}
-                                    icon={<BiSolidGroup size={20}/>}
+                                    // icon={<BiSolidGroup size={20}/>}
+                                    // icon={<FiUsers size={20}/>}
+                                    icon={<CiUser size={20}/>}
+                                    active
                                 />,
 
                                 <SidebarItem
-                                    text={"Chart"}
-                                    icon={<BiSolidPieChartAlt2 size={20}/>}
-                                    active
-                                />
+                                    text={"Report"}
+                                    // icon={<BiSolidPieChartAlt2 size={20}/>}
+                                    icon={<CiWavePulse1 size={20}/>}
+                                />,
+
+                                // <SidebarItem icon={<FiSlack size={20}/>} text={"Items"}/>,
+                                <SidebarItem icon={<CiBoxes size={20}/>} text={"Items"}/>,
+
+                                <SidebarItem icon={<FiCpu size={20}/>} text={"Itemss"}/>
                             ]
                         }/>
                     </aside>
@@ -60,16 +71,20 @@ function AdminView(){
                         callBack={handleSidebar}
                     />
 
+                    {/*------------------------------- Content here ----------------------------------*/}
+
                     <section className={" p-3 flex-1 flex justify-center items-center bg-[#EDEFEE]"}>
-                        <Card/>
+                        {/*<Card/>*/}
+
+                        <UserView/>
+
                     </section>
+
 
 
                 </main>
 
             </section>
-
-
         </>
     )
 }

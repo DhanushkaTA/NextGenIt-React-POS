@@ -15,6 +15,25 @@
     .log-in{
 
     }
+
+    .flex-center{
+       @apply flex flex-row items-center justify-center
+    }
+
+    .scroll-bar::-webkit-scrollbar{
+        width: 0.5rem;
+        height: 0.5rem;
+    }
+
+    .scroll-bar::-webkit-scrollbar-thumb{
+        border-radius: .5rem;
+        background-color: #0004;
+        visibility: hidden;
+    }
+
+    .scroll-bar:hover::-webkit-scrollbar-thumb{
+        visibility: visible;
+    }
 }
 
 
