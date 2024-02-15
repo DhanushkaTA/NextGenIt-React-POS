@@ -7,7 +7,7 @@ import Header from "../components/header/header.tsx";
 // import Card from "../components/card/card.tsx";
 import {useState} from "react";
 import {FiCpu} from "react-icons/fi";
-import {CiBoxes, CiGrid42, CiUser, CiWavePulse1} from "react-icons/ci";
+import {CiAlignBottom, CiBoxes, CiGrid42, CiUser} from "react-icons/ci";
 
 
 function AdminView(){
@@ -46,14 +46,16 @@ function AdminView(){
                                     active
                                 />,
 
+                                <SidebarItem icon={<CiBoxes size={20}/>} text={"Items"}/>,
+
                                 <SidebarItem
                                     text={"Report"}
                                     // icon={<BiSolidPieChartAlt2 size={20}/>}
-                                    icon={<CiWavePulse1 size={20}/>}
+                                    // icon={<CiWavePulse1 size={20}/>}
+                                    icon={<CiAlignBottom  size={20}/>}
                                 />,
 
                                 // <SidebarItem icon={<FiSlack size={20}/>} text={"Items"}/>,
-                                <SidebarItem icon={<CiBoxes size={20}/>} text={"Items"}/>,
 
                                 <SidebarItem icon={<FiCpu size={20}/>} text={"Itemss"}/>
                             ]
@@ -73,7 +75,7 @@ function AdminView(){
 
                     {/*------------------------------- Content here ----------------------------------*/}
 
-                    <section className={" p-3 flex-1 flex justify-center items-center bg-[#EDEFEE]"}>
+                    <section className={"p-3 flex-1 flex justify-center items-center bg-[#EDEFEE]"}>
                         {/*<Card/>*/}
 
                         <UserView/>
