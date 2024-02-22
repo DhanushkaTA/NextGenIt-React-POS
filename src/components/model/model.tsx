@@ -1,9 +1,9 @@
-import React, {ReactNode} from "react";
+import React from "react";
 import { FaTrashAlt } from "react-icons/fa";
 
 interface Props{
     open:boolean,
-    onClose:Function,
+    onClose:any,
     children:React.ReactNode,
     icon?:any,
     handleFunction?:Function

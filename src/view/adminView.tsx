@@ -1,13 +1,14 @@
 import SidebarContext from "../context/contexts.ts";
 import Sidebar from "../components/sidebar/sidebar.tsx";
 import SidebarItem from "../components/sidebarItems/sidebarItem.tsx";
-import UserView from "./userView.tsx";
+// import UserView from "./userView.tsx";
+import Adduser from "./adduser.tsx";
 // import {BiSolidDashboard, BiSolidGroup, BiSolidPieChartAlt2} from "react-icons/bi";
 import Header from "../components/header/header.tsx";
 // import Card from "../components/card/card.tsx";
 import {useState} from "react";
 import {FiCpu} from "react-icons/fi";
-import {CiAlignBottom, CiBoxes, CiGrid42, CiUser} from "react-icons/ci";
+import {CiAlignBottom, CiGrid42, CiMicrochip, CiUser} from "react-icons/ci";
 
 
 function AdminView(){
@@ -46,7 +47,7 @@ function AdminView(){
                                     active
                                 />,
 
-                                <SidebarItem icon={<CiBoxes size={20}/>} text={"Items"}/>,
+                                <SidebarItem icon={<CiMicrochip size={20}/>} text={"Items"}/>,
 
                                 <SidebarItem
                                     text={"Report"}
@@ -68,17 +69,20 @@ function AdminView(){
                 <main id={"main-content"} className={"flex-1 flex flex-col"}>
 
                     <Header
-                        username={"desfewrg"}
+                        username={"username"}
                         email={"johndoe@gmail.com"}
                         callBack={handleSidebar}
                     />
 
                     {/*------------------------------- Content here ----------------------------------*/}
 
-                    <section className={"p-3 flex-1 flex justify-center items-center bg-[#EDEFEE]"}>
+                    {/*#EDEFEE*/}
+                    <section className={"p-3 flex-1 flex justify-center items-center bg-[#F6F8FC]"}>
                         {/*<Card/>*/}
 
-                        <UserView/>
+                        {/*<UserView/>*/}
+
+                        <Adduser/>
 
                     </section>
 
