@@ -30,6 +30,8 @@ function Adduser(){
     const [passwordValid, setPasswordValid] = useState(true)
     const [rePasswordValid, setRePasswordValid] = useState(true)
 
+    const [validateValues, setValidateValues] = useState(false)
+
     function clickProfile(){
         fileChooser.current.click();
     }
@@ -96,35 +98,55 @@ function Adduser(){
         return text===password;
     }
 
+    const cheackValues = () => {
+
+        !Validator.fullNameValidator(firstName) ? setFNameValid(false) :
+            !Validator.fullNameValidator(lastName) ? setLNameValid(false) :
+                !Validator.emailValidator(email) ? setEmailValid(false) :
+                    !Validator.contactValidator(phoneNumber) ? setContactValid(false) :
+                        !Validator.usernameValidator(username) ? setUsernameValid(false) :
+                            !Validator.passwordValidator(password) ? setPasswordValid(false) :
+                                !Validator.passwordValidator(rePassword) ? setRePasswordValid(false) :
+                                    setValidateValues(true);
+    }
+
     async function creatUser(){
-        const config = {
-            headers: {
-                'Authorization':'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7Il9pZCI6IjY1YTgwMjg0NTcyMjYxYzMzY2Q2MjkwYyIsInVzZXJuYW1lIjoiVGhhcmluZHVAMTAyIiwiZnVsbE5hbWUiOiJUaGFyaW5kdSBEaGFudXNoa2EiLCJlbWFpbCI6ImRoYW51OTA5YWJAZ21haWwuY29tIiwicGhvbmVOdW1iZXIiOjcwMjAzNzE2OCwicGFzc3dvcmQiOiIiLCJyb2xlIjoiYWRtaW4iLCJwcm9QaWMiOiJwcm9QaWMiLCJfX3YiOjB9LCJpYXQiOjE3MDc5ODUyOTAsImV4cCI6MTcwODU5MDA5MH0.CT_cZad4KBCRx0XMjk3Eugrqci1l0fRjtF94ybRtjpY',
-                'Content-Type': 'multipart/form-data'
-            }
-        };
 
-        const data = JSON.stringify({
-            "username": username,
-            "fullName": firstName+" "+lastName,
-            "email": email,
-            "phoneNumber": phoneNumber,
-            "password": password,
-            "role":  role
-        })
+        cheackValues();
 
-        let formData  = new FormData();
-        formData.append('user',data);
-        formData.append('file',profilePic)
+        if (validateValues){
 
-        await axios.post('http://localhost:9000/user/save',formData,config)
-            .then(response => {
-                alert(response.data.message)
-                window.location.reload();
+            const config = {
+                headers: {
+                    'Authorization':'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7Il9pZCI6IjY1YTgwMjg0NTcyMjYxYzMzY2Q2MjkwYyIsInVzZXJuYW1lIjoiVGhhcmluZHVAMTAyIiwiZnVsbE5hbWUiOiJUaGFyaW5kdSBEaGFudXNoa2EiLCJlbWFpbCI6ImRoYW51OTA5YWJAZ21haWwuY29tIiwicGhvbmVOdW1iZXIiOjcwMjAzNzE2OCwicGFzc3dvcmQiOiIiLCJyb2xlIjoiYWRtaW4iLCJwcm9QaWMiOiJwcm9QaWMiLCJfX3YiOjB9LCJpYXQiOjE3MDc5ODUyOTAsImV4cCI6MTcwODU5MDA5MH0.CT_cZad4KBCRx0XMjk3Eugrqci1l0fRjtF94ybRtjpY',
+                    'Content-Type': 'multipart/form-data'
+                }
+            };
+
+            const data = JSON.stringify({
+                "username": username,
+                "fullName": firstName+" "+lastName,
+                "email": email,
+                "phoneNumber": phoneNumber,
+                "password": password,
+                "role":  role
             })
-            .catch(error => {
-                alert(error)
-            })
+
+            let formData  = new FormData();
+            formData.append('user',data);
+            formData.append('file',profilePic)
+
+            await axios.post('http://localhost:9000/user/save',formData,config)
+                .then(response => {
+                    alert(response.data.message)
+                    window.location.reload();
+                })
+                .catch(error => {
+                    alert(error)
+                })
+
+        }
+
     }
 
     return(
