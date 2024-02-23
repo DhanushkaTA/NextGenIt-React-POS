@@ -10,6 +10,12 @@ function ItemView() {
     const [brand, setBrand] = useState<string>("")
     const [category, setCategory] = useState<string>("")
 
+    const list:any[]=[
+        {text:"All"},
+        {text:"Msi", icon:"src/assets/images/logo/brand/MSI.png"},
+        {text:"Razer", icon:"src/assets/images/logo/brand/Razer_Logo.png" },
+        {text:"Rog", icon:"src/assets/images/logo/brand/rog_logo.png"}]
+
     function cmbBoxStates(value:string,id:string){
 
         switch (id){
@@ -24,7 +30,7 @@ function ItemView() {
     }
 
     function print(){
-        console.log(brand+" "+category)
+        console.log(brand+" : "+category)
     }
 
     return(
@@ -47,12 +53,14 @@ function ItemView() {
                               placeholder={"Select brand"}
                               label={"Select Brand"}
                               callBack={cmbBoxStates}
-                              item={[{text:"All"},{text:"Msi"},{text:"hp"},{text:"Dell"}]}/>
+                              onlyIcon={true}
+                              item={list}/>
 
                     <Combobox id={'category'}
                               placeholder={"Select Option"}
                               label={"Select Option"}
                               callBack={cmbBoxStates}
+                              onlyIcon={false}
                               item={[{text:"All"},{text:"Laptop"},{text:"Keyboard"},{text:"Mouse"}]}/>
                 </div>
 

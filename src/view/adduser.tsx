@@ -108,6 +108,7 @@ function Adduser(){
                             !Validator.passwordValidator(password) ? setPasswordValid(false) :
                                 !Validator.passwordValidator(rePassword) ? setRePasswordValid(false) :
                                     setValidateValues(true);
+        return;
     }
 
     async function creatUser(){
@@ -135,6 +136,7 @@ function Adduser(){
             let formData  = new FormData();
             formData.append('user',data);
             formData.append('file',profilePic)
+            formData.append('type',"user");
 
             await axios.post('http://localhost:9000/user/save',formData,config)
                 .then(response => {

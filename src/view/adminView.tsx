@@ -1,7 +1,7 @@
 import SidebarContext from "../context/contexts.ts";
 import Sidebar from "../components/sidebar/sidebar.tsx";
 import SidebarItem from "../components/sidebarItems/sidebarItem.tsx";
-import UserView from "./userView.tsx";
+// import UserView from "./userView.tsx";
 // import Adduser from "./adduser.tsx";
 import ItemView from "./itemView.tsx";
 // import {BiSolidDashboard, BiSolidGroup, BiSolidPieChartAlt2} from "react-icons/bi";
