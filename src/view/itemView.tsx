@@ -3,12 +3,20 @@
 import {CiCirclePlus, CiFilter} from "react-icons/ci";
 // import Model from "../components/model/model.tsx";
 import Combobox from "../components/combobox/combobox.tsx";
-import {useState} from "react";
+import {useEffect, useState} from "react";
 
 function ItemView() {
 
     const [brand, setBrand] = useState<string>("")
     const [category, setCategory] = useState<string>("")
+
+    useEffect(() => {
+        getAllBrands()
+    }, []);
+
+    function getAllBrands(){
+
+    }
 
     const list:any[]=[
         {text:"All"},

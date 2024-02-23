@@ -20,6 +20,7 @@ function Combobox(props:Props) {
     const [isDown, setIsDown] = useState<boolean>(true)
 
     const [placeholder, setPlaceholder] = useState<string | undefined>(undefined)
+    const [icon, setIcon] = useState("")
 
     useEffect(() => {
         props.label ?
@@ -33,8 +34,9 @@ function Combobox(props:Props) {
         props.callBack(placeholder,props.id)
     }, [placeholder]);
 
-    function clickFun(text:string){
+    function clickFun(text:string, icon:string){
         setPlaceholder(text)
+        setIcon(icon)
         setIsDown(true)
     }
 
@@ -53,8 +55,14 @@ function Combobox(props:Props) {
             <div
                 onClick={() => setIsDown(value => !value)}
                 className={"min-w-[230px] border rounded-md shadow drop-shadow-4" +
-                " flex flex-row items-center justify-between h-[45px] p-5 font-[400]"}>
-                <span>{placeholder}</span>
+                    " flex flex-row items-center justify-between h-[45px] p-5 font-[400]"}>
+                <img src={icon}
+                     className={`w-[100px] 
+                                 ${props.onlyIcon ? "mr-0" : "mr-5"} 
+                                 ${icon ? "block" : "hidden"}`}
+                     alt={'icon'}
+                     title={placeholder}/>
+                <span className={`${icon ? "hidden" : "block"}`}>{placeholder}</span>
                 <CgChevronDown
                     className={`${isDown ? null : "rotate-180"} transition-all`}/>
             </div>
@@ -77,13 +85,12 @@ function Combobox(props:Props) {
                 {/*</li>*/}
 
 
-
                 {
                     props.item.map(value => {
 
                         return <li
                             id={value.text}
-                            onClick={() => clickFun(value.text)}
+                            onClick={() => clickFun(value.text, value.icon)}
                             // onClickCapture={() => props.callBack(value.text, props.id)}
                             className={`relative flex flex-row items-center h-[45px] cursor-pointer  
                                         bg-white rounded-md px-2 hover:bg-[#F2F2F2] 
@@ -94,7 +101,7 @@ function Combobox(props:Props) {
                                  ${props.onlyIcon ? "mr-0" : "mr-5"} 
                                  ${value.icon ? "block" : "hidden"}`}
                                  alt={'icon'}
-                                 title={'icon'}/>
+                                 title={value.text}/>
                             <span className={`text-[14px] ${value.icon ? "hidden" : "block"}`}>{value.text}</span>
                         </li>
 
