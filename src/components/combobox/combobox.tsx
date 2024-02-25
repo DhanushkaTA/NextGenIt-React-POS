@@ -8,7 +8,7 @@ interface Item{
 
 interface Props {
     id:string,
-    placeholder?:string,
+    placeholder:string,
     label?:string,
     item:Item[],
     onlyIcon:boolean,
@@ -19,7 +19,7 @@ function Combobox(props:Props) {
 
     const [isDown, setIsDown] = useState<boolean>(true)
 
-    const [placeholder, setPlaceholder] = useState<string | undefined>(undefined)
+    const [placeholder, setPlaceholder] = useState<string>(props.item[0].text)
     const [icon, setIcon] = useState("")
 
     useEffect(() => {
@@ -43,7 +43,7 @@ function Combobox(props:Props) {
     return(
         <div
             id={props.id}
-            className={" font-Euclid cursor-pointer my-1 relative"}>
+            className={" font-Euclid cursor-pointer my-1 relative mr-5"}>
             <label className={`flex flex-col w-full font-Euclid mb-[2px] flex-wrap 
             text-[12px] font-medium text-[#2e2e2e]
             ${props.label ? "block" : "hidden"}`}>
@@ -54,7 +54,7 @@ function Combobox(props:Props) {
 
             <div
                 onClick={() => setIsDown(value => !value)}
-                className={"min-w-[230px] border rounded-md shadow drop-shadow-4" +
+                className={"min-w-[230px] border rounded-md shadow drop-shadow-4 overflow-hidden" +
                     " flex flex-row items-center justify-between h-[45px] p-5 font-[400]"}>
                 <img src={icon}
                      className={`w-[100px] 
@@ -68,8 +68,8 @@ function Combobox(props:Props) {
             </div>
 
             <ul
-                className={`absolute w-full max-h-[245px] bg-white shadow rounded-md mt-3 overflow-y-auto scroll-bar
-                            ${isDown ? "h-0" : "h-fit p-4 "} transition-all`}>
+                className={`absolute w-full max-h-[200px] bg-white shadow rounded-md mt-3 overflow-y-auto scroll-bar
+                            ${isDown ? "h-0" : "h-fit p-4 "} transition-all z-50`}>
 
                 {/*<li*/}
                 {/*    // id={value.text}*/}
@@ -93,7 +93,7 @@ function Combobox(props:Props) {
                             onClick={() => clickFun(value.text, value.icon)}
                             // onClickCapture={() => props.callBack(value.text, props.id)}
                             className={`relative flex flex-row items-center h-[45px] cursor-pointer  
-                                        bg-white rounded-md px-2 hover:bg-[#F2F2F2] 
+                                        bg-white rounded-md px-2 hover:bg-[#F2F2F2]  overflow-hidden
                                         ${value.icon ? "justify-center" : null}
                                         ${isDown ? "hidden" : "block"}`}>
                             <img src={value.icon}
