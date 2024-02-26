@@ -274,7 +274,7 @@ function ItemView() {
                             <th className={"py-2 text-left "}>CODE</th>
                             <th className={"py-2 text-left uppercase "}>description</th>
                             <th className={"py-2 text-center uppercase "}>category</th>
-                            <th className={"py-2 text-center uppercase"}>brand</th>
+                            <th className={"py-2 text-left uppercase"}>brand</th>
                             <th className={"py-2 text-left uppercase"}>price</th>
                             <th className={"py-2 text-left uppercase"}>qty</th>
                             <th className={"py-2 text-center uppercase"}>war</th>

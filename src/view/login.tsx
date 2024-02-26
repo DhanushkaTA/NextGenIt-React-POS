@@ -97,6 +97,7 @@ function Login() {
                                 required={false}
                                 callBack={handleInput}
                                 icon={<FcReddit/>}
+                                validate={true}
                             />
 
 
@@ -108,6 +109,7 @@ function Login() {
                                 required={false}
                                 callBack={handleInput}
                                 icon={<FcPrivacy/>}
+                                validate={true}
                             />
 
                             <div className={"w-full flex items-center"}>

@@ -41,9 +41,9 @@ function Header(props:Props){
     }, []);
 
     return (
+        // sticky top-0 z-50 backdrop-blur-sm bg-white/50
 
-
-        <header className={"h-[8.3%]  py-1 px-4 border-b flex flex-row items-center"}>
+        <header className={"h-[8.3%] sticky top-0 z-50 backdrop-blur-sm bg-white/50  py-1 px-4 border-b flex flex-row items-center"}>
 
             <div className={"flex-1 font-Euclid flex flex-row items-center"}>
 

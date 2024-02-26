@@ -48,13 +48,13 @@ function Input(props:Props){
     }, [isTextShow]);
 
     return (
-        <div className={"flex flex-col w-full font-Euclid mb-[8px] flex-wrap"}>
+        <div className={"flex flex-col w-full font-Euclid mb-[8px] flex-wrap "}>
             <label htmlFor={props.id}
-            className={"w-full text-[12px] font-medium text-[#2e2e2e]"}>
+            className={`w-full text-[12px] font-medium ${props.validate ? "text-[#2e2e2e]]" : "text-[#F03947]"}`}>
                 {props.label} {props.required ? <span className="text-red-700">*</span> : null}
             </label>
-
-            <div id={"input-container"} className={`relative ${props.icon ? "grayscale hover:grayscale-0" : "grayscale-0"}`}>
+            {/*${props.icon ? "grayscale group-focus:grayscale-0" : "grayscale-0"}*/}
+            <div id={"input-container"} className={`relative  group`}>
                 <input
                     ref={inputField}
                     id={props.id}
@@ -62,11 +62,12 @@ function Input(props:Props){
                     placeholder={props.placeholder}
                     onChange={event => props.callBack(event, props.id)}
                     className={`color w-full h-[40px] outline-none text-[14px] border 
-                                ${props.validate ? "border-[#aaa]" : "border-[#F03947]"} mt-[8px] px-[15px] " +
+                                ${props.validate ? "border-[#aaa]" : "border-[#F03947]"} mt-[8px] px-[15px]" +
                                 " rounded focus:drop-shadow-4 
-                        ${props.passBtn ? "pr-[40px]" : "px-[15px]"}`} />
+                        ${props.passBtn ? "pr-[40px]" : "px-[15px]"}
+                        ${props.validate ? "text-[#2e2e2e]]" : "text-[#F03947]"}`} />
 
-                <div id={"icon-container"} className={"text-2xl absolute top-4 left-2 bottom-0 "}>
+                <div id={"icon-container"} className={"text-2xl absolute top-4 left-2 bottom-0 grayscale group-hover:grayscale-0"}>
                     {props.icon}
                 </div>
                 {

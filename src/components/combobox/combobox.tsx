@@ -43,7 +43,7 @@ function Combobox(props:Props) {
     return(
         <div
             id={props.id}
-            className={" font-Euclid cursor-pointer my-1 relative mr-5"}>
+            className={" font-Euclid cursor-pointer my-1 relative mr-0"}>
             <label className={`flex flex-col w-full font-Euclid mb-[2px] flex-wrap 
             text-[12px] font-medium text-[#2e2e2e]
             ${props.label ? "block" : "hidden"}`}>

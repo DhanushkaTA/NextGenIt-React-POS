@@ -1,4 +1,3 @@
-// let fullNameRegex=/^[A-Za-z]{3,225}$/;
 // let fullNameRegex=/^(?=.*[a-z])(?=.*[A-Z])[^A-Za-z0-9\s]*$/
 // let dobRegex=/[0-9]{4,4}-[0-9]{2,2}-[0-9]{2,2}$/;
 // let idRegex=/[0-9]{10,20}$/;
@@ -10,6 +9,10 @@ let passwordRegex=/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@#$!%&?])[A-Za-z\d@#$!%&
 let contactRegex=/^[0-9]{10}$/;
 let usernameRegex=/^[a-zA-Z][a-zA-Z0-9_\-@]{2,19}$/;
 let emailRegex=/^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/;
+
+let productName=/^[a-zA-Z0-9,\s-|_]{5,225}$/;
+let numberRegex=/^[0-9.]*$/;
+
 
 export const usernameValidator = (username:string) :boolean => {
     console.log(usernameRegex.test(username))
@@ -31,4 +34,12 @@ export const passwordValidator = (password:string):boolean => {
 
 export const contactValidator = (contact:string):boolean => {
     return contactRegex.test(contact)
+}
+
+export const productNameValidator = (name:string):boolean => {
+    return productName.test(name);
+}
+
+export const numberValidator = (number:string):boolean => {
+    return numberRegex.test(number);
 }

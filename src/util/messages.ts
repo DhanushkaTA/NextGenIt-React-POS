@@ -13,4 +13,9 @@ export const passwordMsg :string = "At least 8 characters long." +
     "Contains a combination of uppercase letters, lowercase letters, " +
     "numbers, and special characters (such as !, @, #, $, %, etc.)."
 
-export const rePassMsg = "Password not matched"
+export const rePassMsg :string = "Password not matched"
+
+export const productNameMsg :string = "Allows only between 5 and 225 characters matching " +
+    "any uppercase letter (A-Z), any lowercase letter (a-z), numbers (0-9) , | , - and _";
+
+export const numberMsg :string = "Allow only numbers";
