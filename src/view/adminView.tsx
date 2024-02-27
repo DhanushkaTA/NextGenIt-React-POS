@@ -84,11 +84,11 @@ function AdminView(){
 
                         {/*<UserView/>*/}
 
-                        <ItemView/>
+                        {/*<ItemView/>*/}
 
                         {/*<Adduser/>*/}
 
-                        {/*<AddItem/>*/}
+                        <AddItem/>
 
                     </section>
 

@@ -2,6 +2,7 @@
 
 import {CiCirclePlus, CiEdit, CiTrash} from "react-icons/ci";
 // import Model from "../components/model/model.tsx";
+import Alert from "../components/alert/alert.tsx";
 import Combobox from "../components/combobox/combobox.tsx";
 import {useEffect, useRef, useState} from "react";
 import axios from "axios";
@@ -47,6 +48,10 @@ function ItemView() {
 
     const inputRef = useRef(null);
 
+    const [alertOpen, setAlertOpen] = useState<boolean>(false)
+    const [alertType, setAlertType] = useState<string>("")
+    const [alertMsg, setAlertMsg] = useState<string>("")
+
     const list:any[]=[{text:"All"}]
 
     useEffect(() => {
@@ -68,6 +73,12 @@ function ItemView() {
         getFiltredBrands();
         getAllItem()
     }, [category,brand]);
+
+    useEffect(() => {
+        if (!alertOpen) {
+            setAlertMsg("")
+        }
+    }, [alertOpen]);
 
 
     // Pagination controller -------------------------------------------------------------------------
@@ -185,27 +196,41 @@ function ItemView() {
     }
 
 
-    function handleDeleteItem(){
+    async function handleDeleteItem(){
         const config = {
             headers: {
                 'Authorization':'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7Il9pZCI6IjY1YTgwMjg0NTcyMjYxYzMzY2Q2MjkwYyIsInVzZXJuYW1lIjoiVGhhcmluZHVAMTAyIiwiZnVsbE5hbWUiOiJUaGFyaW5kdSBEaGFudXNoa2EiLCJlbWFpbCI6ImRoYW51OTA5YWJAZ21haWwuY29tIiwicGhvbmVOdW1iZXIiOjcwMjAzNzE2OCwicGFzc3dvcmQiOiIiLCJyb2xlIjoiYWRtaW4iLCJwcm9QaWMiOiJwcm9QaWMiLCJfX3YiOjB9LCJpYXQiOjE3MDg2OTA2MzUsImV4cCI6MTcwOTI5NTQzNX0.4XoyJEzi5zfUQFYB4Yl97p9U9KVrgzQErtXPapDRL3U'
             }
         };
 
-        axios.delete(`http://localhost:9000/item/delete?id=${deleteId}`,config)
+        await axios.delete(`http://localhost:9000/item/delete?id=${deleteId}`,config)
             .then(response => {
                 alert(response.data.message)
+                console.log(response.data)
+                showAlert('success',response.data.message)
             })
             .catch(error => {
                 alert(error)
+                console.log(error)
+                showAlert('error','Something went wrong!')
             })
         setOpen(false)
         setDeleteId("")
         getAllItem()
     }
 
+    function showAlert(type:string,msg:string){
+        setAlertType(type);
+        setAlertMsg(msg);
+        //Open alert
+        setAlertOpen(true)
+    }
+
+
     function print(){
         console.log(brand+" : "+category)
+
+        setAlertOpen(value => !value)
     }
 
     return(
@@ -216,6 +241,12 @@ function ItemView() {
                     Item
                 </label>
             </div>
+
+            <Alert open={alertOpen}
+                   type={alertType}
+                   message={alertMsg}
+                   onClose={() => setAlertOpen(false)}
+            />
 
             {/*--------------------------------------------------------------------------------------*/}
 
@@ -247,6 +278,12 @@ function ItemView() {
 
                     <span>Add Item</span>
                 </button>
+
+                <Alert open={alertOpen}
+                       type={alertType}
+                       message={alertMsg}
+                       onClose={() => setAlertOpen(false)}
+                />
 
                 <Model open={open} onClose={() => setOpen(false)}>
                     <button className="btn btn-danger w-full" onClick={() => handleDeleteItem()}>Delete</button>
@@ -382,7 +419,7 @@ function ItemView() {
                         <label className={"mr-2"}>Show</label>
                         <select id="recodeLimit"
                                 className={"p-1 w-60px] h-[30px] text-center border border-gray-600 rounded outline-none"}
-                                onChange={() => selectRecodCount(event)}>
+                                onChange={(event) => selectRecodCount(event)}>
                             <option value={10} selected>10</option>
                             <option value={20}>20</option>
                             <option value={30}>30</option>

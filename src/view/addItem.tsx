@@ -9,6 +9,7 @@ import axios from "axios";
 
 import * as Validator from "../util/validator.ts"
 import * as Msg from "../util/messages.ts"
+import Alert from "../components/alert/alert.tsx";
 
 // import { CKEditor } from '@ckeditor/ckeditor5-react';
 // import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
@@ -33,6 +34,10 @@ const AddItem = () =>{
     const fileChooser :any = useRef();
     const imageRef:any = useRef();
     const [productImage, setProductImage] = useState<any>(null)
+
+    const [alertOpen, setAlertOpen] = useState<boolean>(false)
+    const [alertType, setAlertType] = useState<string>("")
+    const [alertMsg, setAlertMsg] = useState<string>("")
 
     const [code, setCode] = useState<string>("")
     const [productName, setProductName] = useState<string>("")
@@ -142,6 +147,10 @@ const AddItem = () =>{
 
     }
 
+    function validateValues() {
+
+    }
+
     async function creatItem() {
 
         if (true){
@@ -176,15 +185,20 @@ const AddItem = () =>{
             await axios.post('http://localhost:9000/item/save',formData,config)
                 .then(response => {
                     alert(response.data.message)
-                    window.location.reload();
+                    // window.location.reload()
+                    showAlert('success',response.data.message)
+                    setTimeout(function (){window.location.reload()},2001)
                 })
                 .catch(error => {
                     console.log(error)
-
                     console.log(error.response.data.message)
 
-                    alert(error)
+                    showAlert('error',"")
                 })
+
+            // if (alertType == 'success') {
+            //     window.location.reload()
+            // }
 
         }
 
@@ -210,12 +224,24 @@ const AddItem = () =>{
             })
     }
 
+    function showAlert(type:string,msg:string){
+        setAlertType(type);
+        setAlertMsg(msg);
+        setAlertOpen(true)
+    }
+
     return (
         <section className={"bg-transparent w-full min-h-full flex flex-col"}>
 
             <h1 className={"text-3xl font-[500] w-full font-Poppins"}>
                 Add new item
             </h1>
+
+            <Alert open={alertOpen}
+                   type={alertType}
+                   message={alertMsg}
+                   onClose={() => setAlertOpen(false)}
+            />
 
             <div className={"pt-2 text-[14px] font-[500] w-full flex flex-row"}>
                 <a className={"mr-2 text-gray-800 flex flex-row justify-center items-center"}>Dashboard <AiOutlineSwapRight
