@@ -298,6 +298,7 @@ const AddItem = () =>{
                                    required={true}
                                    callBack={handleInput}
                                    validate={codeValid}
+                                   borderRequired={true}
                             />
                         </div>
 
@@ -310,6 +311,7 @@ const AddItem = () =>{
                                    callBack={handleInput}
                                    validate={productNameValid}
                                    message={Msg.productNameMsg}
+                                   borderRequired={true}
                             />
                         </div>
 
@@ -319,7 +321,10 @@ const AddItem = () =>{
                                    label={"Description"}
                                    placeholder={"Product name"}
                                    required={false}
-                                   callBack={handleInput} validate={descriptionValid}/>
+                                   callBack={handleInput}
+                                   validate={descriptionValid}
+                                   borderRequired={true}
+                            />
                         </div>
                     </div>
                 </section>
@@ -395,6 +400,7 @@ const AddItem = () =>{
                                        callBack={handleInput}
                                        validate={qtyValid}
                                        message={Msg.numberMsg}
+                                       borderRequired={true}
                                 />
                             </div>
 
@@ -406,7 +412,10 @@ const AddItem = () =>{
                                        label={"Warranty"}
                                        placeholder={"warranty"}
                                        required={false}
-                                       callBack={handleInput} validate={warrantyValid}/>
+                                       callBack={handleInput}
+                                       validate={warrantyValid}
+                                       borderRequired={true}
+                                />
                             </div>
                         </div>
                     </div>
@@ -439,6 +448,7 @@ const AddItem = () =>{
                                     icon={<BiSolidBadgeDollar className={"text-red-600"}/>}
                                     validate={regPriceValid}
                                     message={Msg.numberMsg}
+                                    borderRequired={true}
                                 />
                             </div>
 
@@ -455,6 +465,7 @@ const AddItem = () =>{
                                     icon={<BiSolidBadgeDollar className={"text-red-600"}/>}
                                     validate={salePriceValid}
                                     message={Msg.numberMsg}
+                                    borderRequired={true}
                                 />
                             </div>
 

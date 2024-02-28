@@ -13,6 +13,8 @@ interface Props {
     passIcon_2?:any,
     validate?:boolean,
     message?:string,
+    borderColor?:string,
+    borderRequired:boolean,
     callBack: Function;
 }
 
@@ -31,6 +33,8 @@ function Input(props:Props){
         if (props.passBtn){
             setPassBtnIcon(props.passIcon_1)
         }
+
+        console.log("border : "+props.borderColor)
 
     }, []);
 
@@ -61,11 +65,15 @@ function Input(props:Props){
                     type={props.type}
                     placeholder={props.placeholder}
                     onChange={event => props.callBack(event, props.id)}
-                    className={`color w-full h-[40px] outline-none text-[14px] border 
-                                ${props.validate ? "border-[#aaa]" : "border-[#F03947]"} mt-[8px] px-[15px]" +
-                                " rounded focus:drop-shadow-4 
+                    className={`color w-full h-[40px] outline-none text-[14px]
+                                ${props.borderRequired ? "border" : null} 
+                                ${!props.validate ? "border-[#F03947]" :
+                                    props.borderColor ? `border-[#${props.borderColor}]` : "border-[#aaa]"
+                    }
+                                mt-[8px] px-[15px] rounded
                         ${props.passBtn ? "pr-[40px]" : "px-[15px]"}
-                        ${props.validate ? "text-[#2e2e2e]]" : "text-[#F03947]"}`} />
+                        ${props.validate ? "text-[#2e2e2e]]" : "text-[#F03947]"} 
+                        ${props.borderRequired ? "focus:drop-shadow-4" : null}`} />
 
                 <div id={"icon-container"} className={"text-2xl absolute top-4 left-2 bottom-0 grayscale group-hover:grayscale-0"}>
                     {props.icon}

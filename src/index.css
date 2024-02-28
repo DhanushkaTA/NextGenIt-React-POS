@@ -85,6 +85,14 @@
         @apply bg-[#FFE4DE] text-[#CB5650]
     }
 
+    .height{
+        /*height: 10%;*/
+        /*max-height: calc(100% - 175px);*/
+        max-height: 250px;
+        /*overflow: auto;*/
+        background-color: #CB5650;
+    }
+
 }
 
 

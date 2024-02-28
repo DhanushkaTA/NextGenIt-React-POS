@@ -1,16 +1,19 @@
 import SidebarContext from "../context/contexts.ts";
 import Sidebar from "../components/sidebar/sidebar.tsx";
 import SidebarItem from "../components/sidebarItems/sidebarItem.tsx";
-// import UserView from "./userView.tsx";
-// import Adduser from "./adduser.tsx";
-import ItemView from "./itemView.tsx";
-import AddItem from "./addItem.tsx";
-// import {BiSolidDashboard, BiSolidGroup, BiSolidPieChartAlt2} from "react-icons/bi";
 import Header from "../components/header/header.tsx";
-// import Card from "../components/card/card.tsx";
 import {useState} from "react";
 import {FiCpu} from "react-icons/fi";
 import {CiAlignBottom, CiGrid42, CiMicrochip, CiUser} from "react-icons/ci";
+
+import CheackOutView from "./cheackOutView.tsx";
+
+// import UserView from "./userView.tsx";
+// import Adduser from "./adduser.tsx";
+// import ItemView from "./itemView.tsx";
+// import AddItem from "./addItem.tsx";
+// import Card from "../components/card/card.tsx";
+// import {BiSolidDashboard, BiSolidGroup, BiSolidPieChartAlt2} from "react-icons/bi";
 
 
 function AdminView(){
@@ -31,7 +34,7 @@ function AdminView(){
 
                 <SidebarContext.Provider value={expanded}>
 
-                    <aside className={" w-max"}>
+                    <aside className={"w-max"}>
                         <Sidebar children={
                             [
                                 <SidebarItem
@@ -88,7 +91,9 @@ function AdminView(){
 
                         {/*<Adduser/>*/}
 
-                        <AddItem/>
+                        {/*<AddItem/>*/}
+
+                        <CheackOutView/>
 
                     </section>
 

@@ -219,15 +219,30 @@ function Adduser(){
 
                         {/*lg:max-w-[350px] lg:min-w-fit*/}
                         <div className={"w-[350px] "}>
-                            <Input id={"firstName"} type={"text"} required={true} callBack={handleInput}
-                                   label={"First Name"} placeholder={"First Name"} validate={fNameValid}
-                                    message={Msg.fullNameMsg}/>
+                            <Input
+                                id={"firstName"}
+                                type={"text"}
+                                required={true}
+                                callBack={handleInput}
+                                label={"First Name"}
+                                placeholder={"First Name"}
+                                validate={fNameValid}
+                                message={Msg.fullNameMsg}
+                                borderRequired={true}
+                            />
                         </div>
 
                         <div className={"w-[350px]"}>
-                            <Input id={"lastName"} type={"text"} required={true} callBack={handleInput}
-                                   label={"Last Name"} placeholder={"Last Name"} validate={lNameValid}
-                                   message={Msg.fullNameMsg}/>
+                            <Input
+                                id={"lastName"}
+                                type={"text"}
+                                required={true}
+                                callBack={handleInput}
+                                label={"Last Name"}
+                                placeholder={"Last Name"}
+                                validate={lNameValid}
+                                message={Msg.fullNameMsg}
+                                borderRequired={true}/>
                         </div>
                     </div>
 
@@ -235,15 +250,23 @@ function Adduser(){
                     <div className={"w-full flex flex-row justify-between flex-wrap mt-2"}>
 
                         <div className={"w-[350px]"}>
-                            <Input id={"email"} type={"text"} required={true} callBack={handleInput}
-                                   label={"Email Address"} placeholder={"Email Address"} validate={emailValid}
-                                   message={Msg.emailMsg}/>
+                            <Input
+                                id={"email"}
+                                type={"text"}
+                                required={true}
+                                callBack={handleInput}
+                                label={"Email Address"}
+                                placeholder={"Email Address"}
+                                validate={emailValid}
+                                message={Msg.emailMsg}
+                                borderRequired={true}
+                            />
                         </div>
 
                         <div className={"w-[350px]"}>
                             <Input id={"phoneNumber"} type={"text"} required={true} callBack={handleInput}
                                    label={"Mobile Number"} placeholder={"Mobile Number"} validate={contactValid}
-                                   message={Msg.contactMsg}/>
+                                   message={Msg.contactMsg} borderRequired={true}/>
                         </div>
                     </div>
 
@@ -254,12 +277,12 @@ function Adduser(){
                         <div className={"w-[350px]"}>
                             <Input id={"username"} type={"text"} required={true} callBack={handleInput}
                                    label={"Username"} placeholder={"Username"} validate={usernameValid}
-                                   message={Msg.usernameMsg}/>
+                                   message={Msg.usernameMsg} borderRequired={true}/>
                         </div>
 
                         <div className={"w-[350px]"}>
                             <Input id={"role"} type={"tel"} required={true} callBack={handleInput} validate={true}
-                                   label={"User Role"} placeholder={"User Role"} />
+                                   label={"User Role"} placeholder={"User Role"} borderRequired={true}/>
                         </div>
 
                     </div>
@@ -270,14 +293,14 @@ function Adduser(){
                             <Input id={"password"} type={"password"} required={true} callBack={handleInput}
                                    label={"Password"} placeholder={"password"} validate={passwordValid}
                                    passBtn={true} passIcon_1={<CiRead size={20}/>} passIcon_2={<EyeOff2Outline  size={20}/>}
-                                   message={Msg.passwordMsg}/>
+                                   message={Msg.passwordMsg} borderRequired={true}/>
                         </div>
 
                         <div className={"w-[350px]"}>
                             <Input id={"rePassword"} type={"password"} required={true} callBack={handleInput}
                                    label={"Conform Password"} placeholder={"Conform Password"} validate={rePasswordValid}
                                    passBtn={true} passIcon_1={<CiRead size={20}/>} passIcon_2={<EyeOff2Outline  size={20}/>}
-                                   message={Msg.rePassMsg}/>
+                                   message={Msg.rePassMsg} borderRequired={true}/>
                         </div>
 
                     </div>
