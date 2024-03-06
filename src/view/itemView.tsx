@@ -19,12 +19,15 @@ interface BrandData {
 interface ItemData{
     _id:string,
     code: string,
+    name: string,
     description: string,
     category: string,
     brand: string,
-    price: number,
+    regularPrice: number,
+    salePrice: number,
     qty: number;
     warranty: string,
+    stockStatus: boolean,
     itemPic: string
 }
 
@@ -346,7 +349,7 @@ function ItemView() {
                                     </td>
 
                                     <td className={"font-medium text-[13px] border-b text-left max-w-[300px]"}>
-                                        {value.description}
+                                        {value.name}
                                     </td>
 
                                     <td className={"font-medium text-[13px] border-b text-center"}>
@@ -364,14 +367,14 @@ function ItemView() {
                                                         src={`http://localhost:9000/images/${brand.image}`}
                                                         title={brand.name}
                                                         className={`w-[100px]`}
-                                                    />
+                                                        alt={"brand_icon"}/>
                                                 }
                                             })
                                         }
                                     </td>
 
                                     <td className={"font-medium text-[13px] border-b text-left"}>
-                                        {value.price}
+                                        {value.salePrice}
                                     </td>
 
                                     <td className={`font-medium text-[13px] border-b text-left 

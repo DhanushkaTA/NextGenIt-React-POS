@@ -8,11 +8,11 @@ import {CiAlignBottom, CiGrid42, CiMicrochip, CiUser} from "react-icons/ci";
 
 import CheackOutView from "./cheackOutView.tsx";
 
-// import UserView from "./userView.tsx";
-// import Adduser from "./adduser.tsx";
-// import ItemView from "./itemView.tsx";
-// import AddItem from "./addItem.tsx";
-// import Card from "../components/card/card.tsx";
+import UserView from "./userView.tsx";
+import Adduser from "./adduser.tsx";
+import ItemView from "./itemView.tsx";
+import AddItem from "./addItem.tsx";
+import Card from "../components/card/card.tsx";
 // import {BiSolidDashboard, BiSolidGroup, BiSolidPieChartAlt2} from "react-icons/bi";
 
 

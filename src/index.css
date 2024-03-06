@@ -85,15 +85,41 @@
         @apply bg-[#FFE4DE] text-[#CB5650]
     }
 
-    .height{
-        /*height: 10%;*/
-        /*max-height: calc(100% - 175px);*/
-        max-height: 250px;
-        /*overflow: auto;*/
-        background-color: #CB5650;
+    .shimmering-button{
+        border: none;
+        padding: 0.5rem 1rem;
+        border-radius: 0.25rem;
+        /*background-color: hotpink;*/
+        transition-duration: 1000ms;
+        transition-property: background-position;
     }
 
+    .shimmering-button-anime{
+        /*background-color: hotpink;*/
+        background-image: linear-gradient(-60deg, transparent 0%, transparent 40%, #ffffff44 40%, #ffffff44 60%, transparent 60%, transparent 100%);
+        background-size: 200% 100%;
+        background-repeat: no-repeat;
+    }
+
+    .shimmering-button-anime{
+        background-position-x: 150%;
+    }
+
+    .shimmering-button-anime:hover{
+        background-position-x: -150%;
+    }
+
+    /*.height{*/
+    /*    !*height: 10%;*!*/
+    /*    !*max-height: calc(100% - 175px);*!*/
+    /*    max-height: 250px;*/
+    /*    !*overflow: auto;*!*/
+    /*    background-color: #CB5650;*/
+    /*}*/
+
+
 }
+
 
 
 

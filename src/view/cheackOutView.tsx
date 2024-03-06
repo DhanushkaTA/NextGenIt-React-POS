@@ -1,10 +1,18 @@
 import Card from "../components/card/card.tsx";
 import Input from "../components/input/input.tsx";
+import BillsItem from "../components/billsItem/billsItem.tsx";
 import { CiSearch } from "react-icons/ci";
 import {useEffect, useRef, useState} from "react";
 import axios from "axios";
 import Combobox from "../components/combobox/combobox.tsx";
 import {IoIosArrowBack, IoIosArrowForward} from "react-icons/io";
+import {IoCard} from "react-icons/io5";
+import { FaMoneyBill1Wave } from "react-icons/fa6";
+// import { BsQrCodeScan } from "react-icons/bs";
+import {ScanTable} from '@styled-icons/fluentui-system-filled/ScanTable'
+import {OrderDto} from "../dto/orderDto.ts";
+import {ItemDetailsDto} from "../dto/itemDetails.dto.ts";
+
 
 interface BrandData {
     _id:string
@@ -16,13 +24,22 @@ interface BrandData {
 interface ItemData{
     _id:string,
     code: string,
+    name: string,
     description: string,
     category: string,
     brand: string,
-    price: number,
+    regularPrice: number,
+    salePrice: number,
     qty: number;
     warranty: string,
+    stockStatus: boolean,
     itemPic: string
+}
+
+interface BillItem {
+    item:ItemData,
+    qty:number,
+    total:number
 }
 
 function CheackOutView(){
@@ -34,7 +51,7 @@ function CheackOutView(){
     const [dataArray, setDataArray] = useState<ItemData[]>([]);
 
     const [pageNumber, setPageNumber] = useState(1)
-    const [recodeCount, setRecodeCount] = useState(10)
+    const [recodeCount, setRecodeCount] = useState(5)
     const [totalPages, setTotalPages] = useState()
     const [totalRecodes, setTotalRecodes] = useState()
     const [nextBtn, setNextBtn] = useState<boolean>(false)
@@ -45,7 +62,14 @@ function CheackOutView(){
     const container1 = useRef(null);
     const container2 = useRef(null);
 
+    const bill_container_1 = useRef(null);
+
     const [itemContainerHeight, setItemContainerHeight] = useState(0)
+    const [billContainerHeight, setBillContainerHeight] = useState(0)
+
+    const [bill_items, setBill_items] = useState<BillItem[]>([])
+    const [total, setTotal] = useState(0)
+    const [total_qty, setTotal_qty] = useState(0)
 
     const list:any[]=[{text:"All"}]
 
@@ -53,18 +77,24 @@ function CheackOutView(){
 
         // @ts-ignore
         setItemContainerHeight((container1.current.offsetHeight - container2.current.offsetHeight))
+
         // @ts-ignore
-        console.log((container1.current.offsetHeight - container2.current.offsetHeight))
+        setBillContainerHeight((bill_container_1.current.offsetHeight - 285))
         // @ts-ignore
-        console.log(container1.current.offsetHeight)
-        // @ts-ignore
-        console.log(container2.current.offsetHeight)
+        console.log((bill_container_1.current.offsetHeight - 285))
 
         getAllItem()
 
         // @ts-ignore
         inputRef.current.value=pageNumber
+
+
+
     }, []);
+
+    useEffect(() => {
+        console.log(billContainerHeight + "  bill2")
+    }, [billContainerHeight]);
 
     useEffect(() => {
         brandList.map((value: BrandData) => {
@@ -100,7 +130,7 @@ function CheackOutView(){
     async function getFiltredBrands(){
         const config = {
             headers: {
-                'Authorization':'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7Il9pZCI6IjY1YTgwMjg0NTcyMjYxYzMzY2Q2MjkwYyIsInVzZXJuYW1lIjoiVGhhcmluZHVAMTAyIiwiZnVsbE5hbWUiOiJUaGFyaW5kdSBEaGFudXNoa2EiLCJlbWFpbCI6ImRoYW51OTA5YWJAZ21haWwuY29tIiwicGhvbmVOdW1iZXIiOjcwMjAzNzE2OCwicGFzc3dvcmQiOiIiLCJyb2xlIjoiYWRtaW4iLCJwcm9QaWMiOiJwcm9QaWMiLCJfX3YiOjB9LCJpYXQiOjE3MDg2OTA2MzUsImV4cCI6MTcwOTI5NTQzNX0.4XoyJEzi5zfUQFYB4Yl97p9U9KVrgzQErtXPapDRL3U'
+                'Authorization':'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7Il9pZCI6IjY1YTgwMjg0NTcyMjYxYzMzY2Q2MjkwYyIsInVzZXJuYW1lIjoiVGhhcmluZHVAMTAyIiwiZnVsbE5hbWUiOiJUaGFyaW5kdSBEaGFudXNoa2EiLCJlbWFpbCI6ImRoYW51OTA5YWJAZ21haWwuY29tIiwicGhvbmVOdW1iZXIiOjcwMjAzNzE2OCwicGFzc3dvcmQiOiIiLCJyb2xlIjoiYWRtaW4iLCJwcm9QaWMiOiJwcm9QaWMiLCJfX3YiOjB9LCJpYXQiOjE3MDk0Mzk4ODMsImV4cCI6MTcxMDA0NDY4M30._oBSl4acki4mweDoLuzB4y6C0BERNPtkMWmqyu1ssFU'
             }
         };
 
@@ -117,15 +147,15 @@ function CheackOutView(){
             })
     }
 
-    function getAllItem(){
+    async function getAllItem(){
 
         const config = {
             headers: {
-                'Authorization':'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7Il9pZCI6IjY1YTgwMjg0NTcyMjYxYzMzY2Q2MjkwYyIsInVzZXJuYW1lIjoiVGhhcmluZHVAMTAyIiwiZnVsbE5hbWUiOiJUaGFyaW5kdSBEaGFudXNoa2EiLCJlbWFpbCI6ImRoYW51OTA5YWJAZ21haWwuY29tIiwicGhvbmVOdW1iZXIiOjcwMjAzNzE2OCwicGFzc3dvcmQiOiIiLCJyb2xlIjoiYWRtaW4iLCJwcm9QaWMiOiJwcm9QaWMiLCJfX3YiOjB9LCJpYXQiOjE3MDg2OTA2MzUsImV4cCI6MTcwOTI5NTQzNX0.4XoyJEzi5zfUQFYB4Yl97p9U9KVrgzQErtXPapDRL3U'
+                'Authorization':'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7Il9pZCI6IjY1YTgwMjg0NTcyMjYxYzMzY2Q2MjkwYyIsInVzZXJuYW1lIjoiVGhhcmluZHVAMTAyIiwiZnVsbE5hbWUiOiJUaGFyaW5kdSBEaGFudXNoa2EiLCJlbWFpbCI6ImRoYW51OTA5YWJAZ21haWwuY29tIiwicGhvbmVOdW1iZXIiOjcwMjAzNzE2OCwicGFzc3dvcmQiOiIiLCJyb2xlIjoiYWRtaW4iLCJwcm9QaWMiOiJwcm9QaWMiLCJfX3YiOjB9LCJpYXQiOjE3MDk0Mzk4ODMsImV4cCI6MTcxMDA0NDY4M30._oBSl4acki4mweDoLuzB4y6C0BERNPtkMWmqyu1ssFU'
             }
         };
 
-        axios.get(`http://localhost:9000/item/get/all?size=${recodeCount}&page=${pageNumber}&category=${category}&brand=${brand}`,config)
+        await axios.get(`http://localhost:9000/item/get/all?size=${recodeCount}&page=${pageNumber}&category=${category}&brand=${brand}`,config)
             .then(response => {
 
                 console.log(response.data.data)
@@ -158,6 +188,117 @@ function CheackOutView(){
                 setRecodeCount(parseInt(value))
         }
 
+    }
+
+    function setItemToArray(item:ItemData, qty:number){
+
+        let temp_array=bill_items.slice();
+
+        console.log(temp_array)
+
+        if (temp_array.length===0){
+            temp_array.push({item:item, qty:qty, total:(qty * item.salePrice)})
+        }else {
+
+            let index = findItemInArray(temp_array,item);
+
+            if (index == -1){
+                temp_array.push({item:item, qty:qty, total:(qty * item.salePrice)})
+            }else {
+                temp_array[index].qty += qty;
+                temp_array[index].total = temp_array[index].qty * item.salePrice
+            }
+        }
+
+        setBill_items(temp_array);
+
+        countTotal(temp_array);
+    }
+
+    function countTotal(temp_array:BillItem[]){
+
+        let temp_total=0;
+        let temp_qty=0;
+        temp_array.map(value => {
+            temp_total = temp_total + value.total;
+            temp_qty = temp_qty + value.qty;
+        })
+
+        setTotal(temp_total)
+        setTotal_qty(temp_qty)
+    }
+
+    function findItemInArray(array:BillItem[], item:ItemData): number{
+
+        for (let index in array){
+            if (array[index].item._id == item._id) {
+                return parseInt(index);
+            }
+        }
+
+        return -1;
+    }
+
+    function removeFromCart(id:string){
+
+        alert('delete : '+id)
+
+        let delete_index= -1;
+
+        let temp_array=bill_items.slice();
+
+        for (let index in bill_items){
+            if (bill_items[index].item._id == id) {
+                delete_index=parseInt(index);
+            }
+        }
+
+        if (delete_index != -1){
+            temp_array.splice(delete_index,1)
+
+            setBill_items(temp_array);
+            countTotal(temp_array);
+        }
+
+    }
+
+    function sentOrder(){
+
+        let item_array: ItemDetailsDto[] = [];
+
+
+        bill_items.map(value => {
+            item_array.push(
+                new ItemDetailsDto(
+                    value.item._id,
+                    value.qty,
+                    value.item.salePrice,
+                    value.total
+                )
+            )
+        })
+
+        let orderDetails =
+            new OrderDto(
+                new Date().toJSON().slice(0, 10),
+                total_qty,
+                total,
+                "90771162V",
+                item_array
+            )
+
+        console.log(orderDetails)
+
+        alert("clear")
+        clearForm()
+
+    }
+
+    function clearForm(){
+        setBill_items([])
+        setTotal(0)
+        setTotal_qty(0)
+        getAllItem()
     }
 
 
@@ -210,8 +351,8 @@ function CheackOutView(){
 
                         <div className={"mr-3"}>
                             <Combobox id={'category'}
-                                      placeholder={"Select Option"}
-                                      label={"Select Option"}
+                                      placeholder={"Select Category"}
+                                      label={"Select Category"}
                                       callBack={cmbBoxStates}
                                       onlyIcon={false}
                                       item={[{text: "All"}, {text: "Laptop"}, {text: "Keyboard"}, {text: "Mouse"}]}/>
@@ -269,7 +410,16 @@ function CheackOutView(){
 
                         {
                             dataArray.map(value => {
-                                return <Card/>
+
+                                let pic='';
+
+                                brandList.map(brand => {
+                                    if (brand.name == value.brand) {
+                                        pic=`http://localhost:9000/images/${brand.image}`
+                                    }
+                                })
+
+                                return <Card id={value._id} item={value} brandPic={pic} addFunction={setItemToArray}/>
                             })
                         }
                         {/*<Card/>*/}
@@ -283,7 +433,100 @@ function CheackOutView(){
 
             </div>
 
-            <div className={`flex-1 h-[100%] bg-white sticky top-0 right-0`}>
+            <div ref={bill_container_1} className={`flex-1 h-[100%] bg-white sticky top-0 right-0 p-3 flex flex-col justify-between font-Poppins`}>
+
+                <div className={"w-full text-3xl bg-teal-00 flex-1"}>
+                    <h1 className={"font-[500] mb-1"}>Bills</h1>
+
+                    <div className={`w-full  h-[${billContainerHeight}px] max-h-[${billContainerHeight}px] 
+                    overflow-auto scroll-bar`}>
+
+                        {
+
+                            bill_items.map(value => {
+                                return <BillsItem
+                                    item={value.item}
+                                    id={value.item._id}
+                                    qty={value.qty}
+                                    brandPic={value.item.itemPic}
+                                    removeFunction={removeFromCart}
+                                />
+                            })
+                        }
+
+                        {/*<BillsItem/>*/}
+                        {/*<BillsItem/>*/}
+                        {/*<BillsItem/>*/}
+                        {/*<BillsItem/>*/}
+                        {/*<BillsItem/>*/}
+
+                    </div>
+
+                </div>
+                <div className={"bg-red-00 w-full h-[220px] flex flex-col justify-between font-Poppins"}>
+
+                    <div className={'w-full'}>
+
+                        <div className={"w-full border-b border-dashed border-gray-500 mb-2"}>
+
+                            <div className={"flex flex-row items-center justify-between text-[12px] font-[600] mb-1"}>
+
+                                <p>Sub Total</p>
+                                <p>{total}</p>
+
+                            </div>
+
+                            <div className={"flex flex-row items-center justify-between text-[#989898] text-[12px] font-[600] mb-1"}>
+
+                                <p>Discount</p>
+                                <p>00</p>
+
+                            </div>
+
+                        </div>
+
+                        <div className={"w-full flex flex-row items-center justify-between text-[14px] font-[600]"}>
+                            <p>Total</p>
+                            <p>{total}</p>
+                        </div>
+
+                    </div>
+
+
+                    <div className={"w-full"}>
+
+                        <label className={"font-[500] text-sm"}>Payment Method</label>
+
+                        <div className={"w-full flex flex-row items-center justify-between mt-2"}>
+
+                            <div
+                                className={"cursor-pointer bg-blue-100 border border-blue-500 rounded-xl w-1/4 min-h-[50px] text-blue-600 flex flex-col items-center justify-center"}>
+                                <FaMoneyBill1Wave size={20}/>
+                                <p className={"text-[10px]"}>Cash</p>
+                            </div>
+                            <div
+                                className={"cursor-pointer bg-blue-100 border border-blue-500 rounded-xl w-1/4 min-h-[50px] text-blue-600 flex flex-col items-center justify-center"}>
+                                <IoCard size={20}/>
+                                <p className={"text-[10px]"}>Card</p>
+                            </div>
+                            <div
+                                className={"cursor-pointer bg-blue-100 border border-blue-500 rounded-xl w-1/4 min-h-[50px] text-blue-600 flex flex-col items-center justify-center"}>
+                                <ScanTable size={20}/>
+                                <p className={"text-[10px]"}>E-Wallet</p>
+                            </div>
+                        </div>
+
+                        <div className={"w-full h-max mt-3"}>
+                            <button
+                                onClick={sentOrder}
+                                className={"shimmering-button shimmering-button-anime text-white bg-blue-600 text-sm h-10 w-full"}>Make
+                                Payment
+                            </button>
+                        </div>
+
+                    </div>
+
+                </div>
 
 
             </div>
