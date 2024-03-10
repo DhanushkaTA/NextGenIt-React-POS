@@ -3,6 +3,8 @@ import {FcPrivacy, FcReddit} from "react-icons/fc";
 import { HiArrowNarrowRight } from "react-icons/hi";
 import {useState} from "react";
 import axios from "axios";
+import Cookies from 'js-cookie'
+import {useNavigate} from "react-router-dom";
 
 let elementById :HTMLElement = document.getElementById('password') as HTMLElement;
 
@@ -11,6 +13,8 @@ function Login() {
     const[isVisible ,setVisible] = useState(false);
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
+
+    let navigate = useNavigate();
 
     const handleSetVisibleBtn = () => {
         if (isVisible){
@@ -48,7 +52,12 @@ function Login() {
 
         axios.post('http://localhost:9000/user/auth',data,{headers:headers}).then(res => {
 
-            alert(res.data.message)
+            // alert(res.data.message)
+
+            console.log(res.data.data)
+            Cookies.set('user', JSON.stringify(res.data.data.user), { expires: 7 })
+            Cookies.set('tk',res.data.data.accessToken, { expires: 7 })
+            navigate('/admin')
 
         }).catch(error => {
             // console.log(error)
@@ -91,11 +100,13 @@ function Login() {
 
                             <Input
                                 id={"username"}
+                                value={username}
                                 type={"text"}
                                 label={"Username"}
                                 placeholder={"Enter Username"}
                                 required={false}
                                 callBack={handleInput}
+                                borderRequired={true}
                                 icon={<FcReddit/>}
                                 validate={true}
                             />
@@ -103,12 +114,14 @@ function Login() {
 
                             <Input
                                 id={"password"}
+                                value={password}
                                 type={"password"}
                                 label={"Password"}
                                 placeholder={"Enter Password"}
                                 required={false}
                                 callBack={handleInput}
                                 icon={<FcPrivacy/>}
+                                borderRequired={true}
                                 validate={true}
                             />
 

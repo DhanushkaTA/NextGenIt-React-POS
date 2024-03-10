@@ -1,5 +1,3 @@
-// import Card from "../components/card/card.tsx";
-
 import {CiCirclePlus, CiEdit, CiTrash} from "react-icons/ci";
 // import Model from "../components/model/model.tsx";
 import Alert from "../components/alert/alert.tsx";
@@ -8,6 +6,8 @@ import {useEffect, useRef, useState} from "react";
 import axios from "axios";
 import Model from "../components/model/model.tsx";
 import {IoIosArrowBack, IoIosArrowForward} from "react-icons/io";
+import {useNavigate} from "react-router-dom";
+import Cookies from "js-cookie";
 
 interface BrandData {
     _id:string
@@ -54,6 +54,8 @@ function ItemView() {
     const [alertOpen, setAlertOpen] = useState<boolean>(false)
     const [alertType, setAlertType] = useState<string>("")
     const [alertMsg, setAlertMsg] = useState<string>("")
+
+    let navigate = useNavigate();
 
     const list:any[]=[{text:"All"}]
 
@@ -135,7 +137,7 @@ function ItemView() {
 
         const config = {
             headers: {
-                'Authorization':'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7Il9pZCI6IjY1YTgwMjg0NTcyMjYxYzMzY2Q2MjkwYyIsInVzZXJuYW1lIjoiVGhhcmluZHVAMTAyIiwiZnVsbE5hbWUiOiJUaGFyaW5kdSBEaGFudXNoa2EiLCJlbWFpbCI6ImRoYW51OTA5YWJAZ21haWwuY29tIiwicGhvbmVOdW1iZXIiOjcwMjAzNzE2OCwicGFzc3dvcmQiOiIiLCJyb2xlIjoiYWRtaW4iLCJwcm9QaWMiOiJwcm9QaWMiLCJfX3YiOjB9LCJpYXQiOjE3MDg2OTA2MzUsImV4cCI6MTcwOTI5NTQzNX0.4XoyJEzi5zfUQFYB4Yl97p9U9KVrgzQErtXPapDRL3U'
+                'Authorization': Cookies.get('tk')
             }
         };
 
@@ -159,7 +161,7 @@ function ItemView() {
     async function getFiltredBrands(){
         const config = {
             headers: {
-                'Authorization':'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7Il9pZCI6IjY1YTgwMjg0NTcyMjYxYzMzY2Q2MjkwYyIsInVzZXJuYW1lIjoiVGhhcmluZHVAMTAyIiwiZnVsbE5hbWUiOiJUaGFyaW5kdSBEaGFudXNoa2EiLCJlbWFpbCI6ImRoYW51OTA5YWJAZ21haWwuY29tIiwicGhvbmVOdW1iZXIiOjcwMjAzNzE2OCwicGFzc3dvcmQiOiIiLCJyb2xlIjoiYWRtaW4iLCJwcm9QaWMiOiJwcm9QaWMiLCJfX3YiOjB9LCJpYXQiOjE3MDg2OTA2MzUsImV4cCI6MTcwOTI5NTQzNX0.4XoyJEzi5zfUQFYB4Yl97p9U9KVrgzQErtXPapDRL3U'
+                'Authorization': Cookies.get('tk')
             }
         };
 
@@ -202,7 +204,7 @@ function ItemView() {
     async function handleDeleteItem(){
         const config = {
             headers: {
-                'Authorization':'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7Il9pZCI6IjY1YTgwMjg0NTcyMjYxYzMzY2Q2MjkwYyIsInVzZXJuYW1lIjoiVGhhcmluZHVAMTAyIiwiZnVsbE5hbWUiOiJUaGFyaW5kdSBEaGFudXNoa2EiLCJlbWFpbCI6ImRoYW51OTA5YWJAZ21haWwuY29tIiwicGhvbmVOdW1iZXIiOjcwMjAzNzE2OCwicGFzc3dvcmQiOiIiLCJyb2xlIjoiYWRtaW4iLCJwcm9QaWMiOiJwcm9QaWMiLCJfX3YiOjB9LCJpYXQiOjE3MDg2OTA2MzUsImV4cCI6MTcwOTI5NTQzNX0.4XoyJEzi5zfUQFYB4Yl97p9U9KVrgzQErtXPapDRL3U'
+                'Authorization': Cookies.get('tk')
             }
         };
 
@@ -230,11 +232,11 @@ function ItemView() {
     }
 
 
-    function print(){
-        console.log(brand+" : "+category)
-
-        setAlertOpen(value => !value)
-    }
+    // function print(){
+    //     console.log(brand+" : "+category)
+    //
+    //     setAlertOpen(value => !value)
+    // }
 
     return(
         <section className={"w-full min-h-[100%] bg-white flex flex-col items-center rounded-md"}>
@@ -258,23 +260,29 @@ function ItemView() {
                 <div className={"flex flex-row px-3"}>
                     {/*<CiFilter size={20}/>*/}
 
-                    <Combobox id={'brands'}
-                              placeholder={"Select brand"}
-                              label={"Select Brand"}
-                              callBack={cmbBoxStates}
-                              onlyIcon={true}
-                              item={list}/>
+                    <div className={"mr-3"}>
+                        <Combobox id={'brands'}
+                                  value={brand}
+                                  placeholder={"Select brand"}
+                                  label={"Select Brand"}
+                                  callBack={cmbBoxStates}
+                                  onlyIcon={true}
+                                  item={list}/>
+                    </div>
 
-                    <Combobox id={'category'}
-                              placeholder={"Select Option"}
-                              label={"Select Option"}
-                              callBack={cmbBoxStates}
-                              onlyIcon={false}
-                              item={[{text: "All"}, {text: "Laptop"}, {text: "Keyboard"}, {text: "Mouse"}]}/>
+                    <div className={"mr-3"}>
+                        <Combobox id={'category'}
+                                  value={category}
+                                  placeholder={"Select Option"}
+                                  label={"Select Option"}
+                                  callBack={cmbBoxStates}
+                                  onlyIcon={false}
+                                  item={[{text: "All"}, {text: "Laptop"}, {text: "Keyboard"}, {text: "Mouse"}]}/>
+                    </div>
                 </div>
 
                 <button
-                    onClick={print}
+                    onClick={() => navigate('/admin/add-item')}
                     className={"px-3 py-2 bg-[#4455EF] hover:bg-[#2355FF] text-white font-Euclid" +
                         " flex flex-row items-center cursor-pointer rounded-md"}>
                     <CiCirclePlus size={20} className={"mr-2"}/>
@@ -388,6 +396,7 @@ function ItemView() {
 
                                     <td className={" w-[10%] border-b text-center"}>
                                         <button
+                                            onClick={() => navigate('/admin/add-item', {state:{item:value, list:list}})}
                                             className={"p-1 border border-black rounded-[6px] group" +
                                                 " hover:border-[#2355FF] mr-3"}>
                                             <CiEdit size={18} className={"group-hover:text-[#2355FF] "}/>

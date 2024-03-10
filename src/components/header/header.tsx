@@ -12,6 +12,7 @@ import {CiCalendarDate, CiClock2} from "react-icons/ci";
 interface Props {
     username:string,
     email:string,
+    proPic:string,
     callBack:Function
 }
 
@@ -76,7 +77,7 @@ function Header(props:Props){
             <div className={"relative h-full w-max flex flex-row items-center justify-between"}>
 
                 <img
-                    src={"src/assets/images/people/3.jpg"}
+                    src={`http://localhost:9000/images/${props.proPic}`}
                     className={"w-11 h-11 object-fill bg-center bg-cover rounded-[100%] mr-3"}
                     alt={"user"}
                     title={"profile photo"}

@@ -32,10 +32,10 @@ function Alert(props:Props) {
         <section className={` top-1 right-0 z-[100] bg-transparent transition-all fixed
          ${props.open ? "fixed translate-x-0" : `translate-x-[100%] ${clearTimeout(time)}`}`}>
             <img src={
-                `${props.type=='success' ? "src/assets/images/alert/success-4.png" :
-                    props.type=='error' ? "src/assets/images/alert/error-2.png" : 
-                        props.type=='warring' ? "src/assets/images/alert/warring-1.png" : 
-                            props.type=="info" ? "src/assets/images/alert/info-2.png" : "" 
+                `${props.type=='success' ? "../src/assets/images/alert/success-4.png" :
+                    props.type=='error' ? "../src/assets/images/alert/error-2.png" : 
+                        props.type=='warring' ? "../src/assets/images/alert/warring-1.png" : 
+                            props.type=="info" ? "../src/assets/images/alert/info-2.png" : "" 
                 }`
             }
                  width={300} height={120}/>

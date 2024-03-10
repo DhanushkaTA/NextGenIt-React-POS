@@ -3,6 +3,8 @@ import {IoIosArrowBack, IoIosArrowForward} from "react-icons/io";
 import {useEffect, useRef, useState} from "react";
 import Model from "../components/model/model.tsx";
 import axios from "axios";
+import {useNavigate} from "react-router-dom";
+import Cookies from "js-cookie";
 // import login from "./login.tsx";
 
 interface Data{
@@ -28,6 +30,8 @@ function UserView(){
     const [backBtn, setBackBtn] = useState(true)
 
     const inputRef = useRef(null);
+
+    let navigate = useNavigate();
 
     useEffect(() => {
         getAllUsers()
@@ -58,7 +62,7 @@ function UserView(){
     function getAllUsers(){
         const config = {
             headers: {
-                'Authorization':'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7Il9pZCI6IjY1YTgwMjg0NTcyMjYxYzMzY2Q2MjkwYyIsInVzZXJuYW1lIjoiVGhhcmluZHVAMTAyIiwiZnVsbE5hbWUiOiJUaGFyaW5kdSBEaGFudXNoa2EiLCJlbWFpbCI6ImRoYW51OTA5YWJAZ21haWwuY29tIiwicGhvbmVOdW1iZXIiOjcwMjAzNzE2OCwicGFzc3dvcmQiOiIiLCJyb2xlIjoiYWRtaW4iLCJwcm9QaWMiOiJwcm9QaWMiLCJfX3YiOjB9LCJpYXQiOjE3MDg2NjQ1MDMsImV4cCI6MTcwOTI2OTMwM30.E_TtU3UT4oP41Dhh9mfszv3pf9bTF4Lon-QDIrT4MsE',
+                'Authorization': Cookies.get('tk'),
                 'Content-Type': 'application/json'
             }
         };
@@ -78,7 +82,7 @@ function UserView(){
 
         const config = {
             headers: {
-                'Authorization':'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7Il9pZCI6IjY1YTgwMjg0NTcyMjYxYzMzY2Q2MjkwYyIsInVzZXJuYW1lIjoiVGhhcmluZHVAMTAyIiwiZnVsbE5hbWUiOiJUaGFyaW5kdSBEaGFudXNoa2EiLCJlbWFpbCI6ImRoYW51OTA5YWJAZ21haWwuY29tIiwicGhvbmVOdW1iZXIiOjcwMjAzNzE2OCwicGFzc3dvcmQiOiIiLCJyb2xlIjoiYWRtaW4iLCJwcm9QaWMiOiJwcm9QaWMiLCJfX3YiOjB9LCJpYXQiOjE3MDg2NjQ1MDMsImV4cCI6MTcwOTI2OTMwM30.E_TtU3UT4oP41Dhh9mfszv3pf9bTF4Lon-QDIrT4MsE',
+                'Authorization': Cookies.get('tk')
             }
         };
 
@@ -119,7 +123,9 @@ function UserView(){
                     <CiFilter size={20}/>
                 </div>
 
-                <button onClick={() => setOpen(true)} className={"px-3 py-2 bg-[#4455EF] hover:bg-[#2355FF] text-white font-Euclid flex flex-row items-center cursor-pointer rounded-md"}>
+                <button onClick={() => navigate('/admin/add-user')}
+                        className={"px-3 py-2 bg-[#4455EF] hover:bg-[#2355FF] text-white font-Euclid" +
+                            " flex flex-row items-center cursor-pointer rounded-md"}>
                     <CiCirclePlus size={20} className={"mr-2"}/>
 
                     <span>Add User</span>
@@ -192,6 +198,7 @@ function UserView(){
 
                                         <td className={" w-[10%] border-b"}>
                                             <button
+                                                onClick={() => navigate('/admin/add-user', {state:{user:value}})}
                                                 className={"p-1 border border-black rounded-[6px] group" +
                                                     " hover:border-[#2355FF] mr-3"}>
                                                 <CiEdit size={18} className={"group-hover:text-[#2355FF] "}/>

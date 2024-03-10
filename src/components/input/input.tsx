@@ -5,6 +5,7 @@ interface Props {
     id:string,
     type:string,
     placeholder?:string,
+    value:string,
     label?:string,
     required: boolean,
     icon?:any,
@@ -34,7 +35,7 @@ function Input(props:Props){
             setPassBtnIcon(props.passIcon_1)
         }
 
-        console.log("border : "+props.borderColor)
+        // console.log("border : "+props.borderColor)
 
     }, []);
 
@@ -63,6 +64,7 @@ function Input(props:Props){
                     ref={inputField}
                     id={props.id}
                     type={props.type}
+                    value={props.value}
                     placeholder={props.placeholder}
                     onChange={event => props.callBack(event, props.id)}
                     className={`color w-full h-[40px] outline-none text-[14px]

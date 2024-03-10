@@ -6,13 +6,17 @@ import Combobox from "../components/combobox/combobox.tsx";
 import { BiSolidBadgeDollar } from "react-icons/bi";
 import { PiSealCheckFill } from "react-icons/pi";
 import axios from "axios";
+import Cookies from 'js-cookie'
 
 import * as Validator from "../util/validator.ts"
 import * as Msg from "../util/messages.ts"
 import Alert from "../components/alert/alert.tsx";
 
-// import { CKEditor } from '@ckeditor/ckeditor5-react';
-// import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
+import { CKEditor } from '@ckeditor/ckeditor5-react';
+import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
+
+import {useLocation} from "react-router-dom";
+
 //
 // import { Bold, Italic } from '@ckeditor/ckeditor5-basic-styles';
 // import { Essentials } from '@ckeditor/ckeditor5-essentials';
@@ -31,21 +35,27 @@ interface BrandData {
 
 const AddItem = () =>{
 
+
+    let location = useLocation();
+    const item =location?.state?.item;
+    const list =location?.state?.list;
+
     const fileChooser :any = useRef();
     const imageRef:any = useRef();
     const [productImage, setProductImage] = useState<any>(null)
+    const [avatarImage, setAvatarImage] = useState<string>("../src/assets/images/icon/avator.png")
 
     const [alertOpen, setAlertOpen] = useState<boolean>(false)
     const [alertType, setAlertType] = useState<string>("")
     const [alertMsg, setAlertMsg] = useState<string>("")
 
-    const [code, setCode] = useState<string>("")
-    const [productName, setProductName] = useState<string>("")
-    const [description, setDescription] = useState<string>("")
-    const [qty, setQty] = useState(0)
-    const [warranty, setWarranty] = useState<string>("")
-    const [regPrice, setRegPrice] = useState<number>(0)
-    const [salePrice, setSalePrice] = useState<number>(0)
+    const [code, setCode] = useState<string>(item ? item.code : "")
+    const [productName, setProductName] = useState<string>(item ? item.name : "")
+    const [description, setDescription] = useState<string>(item ? item.description : "")
+    const [qty, setQty] = useState(item ? item.qty : 0)
+    const [warranty, setWarranty] = useState<string>(item ? item.warranty : "");
+    const [regPrice, setRegPrice] = useState<number>(item ? item.regularPrice : "")
+    const [salePrice, setSalePrice] = useState<number>(item ? item.salePrice : "")
 
     const [productNameValid, setProductNameValid] = useState<boolean>(true)
     const [descriptionValid, setDescriptionValid] = useState<boolean>(true)
@@ -55,30 +65,46 @@ const AddItem = () =>{
     const [regPriceValid, setRegPriceValid] = useState<boolean>(true)
     const [salePriceValid, setSalePriceValid] = useState<boolean>(true)
 
-    const [brand, setBrand] = useState<string>("Select")
-    const [category, setCategory] = useState<string>("Select")
+    const [brand, setBrand] = useState<string>(item ? item.brand :"Select")
+    const [category, setCategory] = useState<string>(item ? item.category :"Select")
 
     const [brandList, setBrandList] = useState<BrandData[]>([])
 
-    const brand_list:any[]=[{text:"Select"}]
+    const [brand_list, setBrand_list] = useState(list ? list : [{text:"Select", icon:""}])
+
+    // const brand_list:any[]=[{text:"Select"}]
 
     useEffect(() => {
         getFiltredBrands();
+
+        if (item){
+            setAvatarImage(`http://localhost:9000/images/${item.itemPic}`)
+        }
+
     }, []);
 
     useEffect(() => {
+
+        let list=[{text:"Select", icon:""}]
+
         brandList.map((value: BrandData) => {
-            brand_list.push({text:value.name, icon:`http://localhost:9000/images/${value.image}`})
+            list.push({text:value.name, icon:`http://localhost:9000/images/${value.image}`})
         })
 
+        setBrand_list(list);
+
         console.log(brand+" : "+category)
-    }, [brandList,brand_list]);
+    }, [brandList]);
+
+    useEffect(() => {
+        if (item){
+            setBrand(item.brand)
+        }
+    }, []);
 
     function clickProfile(){
         fileChooser.current.click();
     }
-
-    let op1 = ""
 
     function setImage(event: any | undefined){
 
@@ -112,7 +138,8 @@ const AddItem = () =>{
                 setProductNameValid(Validator.productNameValidator(e.target.value))
                 break;
             case 'description':
-                setDescription(e.target.value)
+                setDescription(e.getData())
+                // setDescription(e.target.value)
                 break;
             case 'qty':
                 setQty(parseInt(e.target.value))
@@ -157,7 +184,7 @@ const AddItem = () =>{
 
             const config = {
                 headers: {
-                    'Authorization':'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7Il9pZCI6IjY1YTgwMjg0NTcyMjYxYzMzY2Q2MjkwYyIsInVzZXJuYW1lIjoiVGhhcmluZHVAMTAyIiwiZnVsbE5hbWUiOiJUaGFyaW5kdSBEaGFudXNoa2EiLCJlbWFpbCI6ImRoYW51OTA5YWJAZ21haWwuY29tIiwicGhvbmVOdW1iZXIiOjcwMjAzNzE2OCwicGFzc3dvcmQiOiIiLCJyb2xlIjoiYWRtaW4iLCJwcm9QaWMiOiJwcm9QaWMiLCJfX3YiOjB9LCJpYXQiOjE3MDg5NjkzMjgsImV4cCI6MTcwOTU3NDEyOH0.U5s4CAfAfsb4FjkazU7VhIZECba9hgw0qd7tkVTRGWw',
+                    'Authorization': Cookies.get('tk'),
                     'Content-Type': 'multipart/form-data'
                 }
             };
@@ -207,7 +234,7 @@ const AddItem = () =>{
     async function getFiltredBrands(){
         const config = {
             headers: {
-                'Authorization':'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7Il9pZCI6IjY1YTgwMjg0NTcyMjYxYzMzY2Q2MjkwYyIsInVzZXJuYW1lIjoiVGhhcmluZHVAMTAyIiwiZnVsbE5hbWUiOiJUaGFyaW5kdSBEaGFudXNoa2EiLCJlbWFpbCI6ImRoYW51OTA5YWJAZ21haWwuY29tIiwicGhvbmVOdW1iZXIiOjcwMjAzNzE2OCwicGFzc3dvcmQiOiIiLCJyb2xlIjoiYWRtaW4iLCJwcm9QaWMiOiJwcm9QaWMiLCJfX3YiOjB9LCJpYXQiOjE3MDg5NjkzMjgsImV4cCI6MTcwOTU3NDEyOH0.U5s4CAfAfsb4FjkazU7VhIZECba9hgw0qd7tkVTRGWw'
+                'Authorization': Cookies.get('tk')
             }
         };
 
@@ -278,7 +305,7 @@ const AddItem = () =>{
                                         " border-[3px] border-dashed border-[#2A8CF5]  mt-2 "}>
                                     <img id={"profilePic"}
                                          src={`${productImage ?
-                                             URL.createObjectURL(productImage) : "src/assets/images/icon/add_user.png"}`}
+                                             URL.createObjectURL(productImage) : avatarImage}`}
                                          alt={"profile"} title={"profile"}
                                          className={"w-[500px] h-[500px] bg-[#DDE8F5] cursor-pointer rounded-md hover:scale-110 transition-all"}
                                          onClick={clickProfile}
@@ -293,6 +320,7 @@ const AddItem = () =>{
                         <div className={"w-full h-max mb-2"}>
                             <Input id={"code"}
                                    type={"text"}
+                                   value={code}
                                    label={"Product code"}
                                    placeholder={"Product code"}
                                    required={true}
@@ -305,6 +333,7 @@ const AddItem = () =>{
                         <div className={"w-full h-max mb-2"}>
                             <Input id={"name"}
                                    type={"text"}
+                                   value={productName}
                                    label={"Product name"}
                                    placeholder={"Product name"}
                                    required={false}
@@ -316,15 +345,57 @@ const AddItem = () =>{
                         </div>
 
                         <div className={"w-full h-max mb-2"}>
-                            <Input id={"description"}
-                                   type={"text"}
-                                   label={"Description"}
-                                   placeholder={"Product name"}
-                                   required={false}
-                                   callBack={handleInput}
-                                   validate={descriptionValid}
-                                   borderRequired={true}
-                            />
+
+                            <label
+                                className={`w-full text-[12px] font-medium ${descriptionValid ? "text-[#2e2e2e]]" : "text-[#F03947]"}`}>
+                                Description
+                            </label>
+
+                            {/*<Input id={"description"}*/}
+                            {/*       type={"text"}*/}
+                            {/*       label={"Description"}*/}
+                            {/*       placeholder={"Product name"}*/}
+                            {/*       required={false}*/}
+                            {/*       callBack={handleInput}*/}
+                            {/*       validate={descriptionValid}*/}
+                            {/*       borderRequired={true}*/}
+                            {/*/>*/}
+
+
+                            <div id={'editor-container'} className="App h-full no-more-tailwind mt-[8px]" >
+                                {/*<h2>Using CKEditor&nbsp;5 build in React</h2>*/}
+
+
+                                <CKEditor
+                                    editor={ClassicEditor}
+                                    // config={ {
+                                    //     plugins: [ Paragraph, Bold, Italic, Essentials ],
+                                    //     toolbar: [ 'bold', 'italic' ]
+                                    // } }
+                                    // config={ editorConfiguration }
+                                    data={description}
+                                    onReady={editor => {
+                                        // You can store the "editor" and use when it is needed.
+                                        console.log('Editor is ready to use!', editor);
+                                    }}
+                                    onChange={(event,editor) => {
+                                        console.log(event);
+                                        // console.log(editor.getData());
+                                        // setDescription(editor.getData())
+
+                                        handleInput(editor , 'description');
+                                    }}
+                                    onBlur={(event, editor) => {
+                                        console.log('Blur.', editor);
+                                        console.log(event)
+                                    }}
+                                    onFocus={(event, editor) => {
+                                        console.log('Focus.', editor);
+                                        console.log(event)
+                                    }}
+                                />
+                            </div>
+
                         </div>
                     </div>
                 </section>
@@ -349,6 +420,7 @@ const AddItem = () =>{
 
                                 <div className={"w-full h-max"}>
                                     <Combobox id={'brands'}
+                                              value={brand}
                                               placeholder={"Select brand"}
                                               label={"Select brand"}
                                               callBack={cmbBoxStates}
@@ -370,6 +442,7 @@ const AddItem = () =>{
 
 
                                     <Combobox id={'category'}
+                                              value={category}
                                               placeholder={"Select Category"}
                                               label={"Select Category"}
                                               callBack={cmbBoxStates}
@@ -394,6 +467,7 @@ const AddItem = () =>{
 
                                 <Input id={"qty"}
                                        type={"number"}
+                                       value={qty}
                                        label={"Quantity"}
                                        placeholder={"0"}
                                        required={false}
@@ -409,6 +483,7 @@ const AddItem = () =>{
 
                                 <Input id={"warranty"}
                                        type={"text"}
+                                       value={warranty}
                                        label={"Warranty"}
                                        placeholder={"warranty"}
                                        required={false}
@@ -441,6 +516,7 @@ const AddItem = () =>{
                                 <Input
                                     id={"regPrice"}
                                     type={"text"}
+                                    value={regPrice.toString()}
                                     label={"Regular Price"}
                                     placeholder={"0.00"}
                                     required={false}
@@ -458,6 +534,7 @@ const AddItem = () =>{
                                 <Input
                                     id={"salePrice"}
                                     type={"text"}
+                                    value={salePrice.toString()}
                                     label={"Sale Price"}
                                     placeholder={"0.00"}
                                     required={false}

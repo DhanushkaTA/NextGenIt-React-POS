@@ -8,6 +8,7 @@ interface Item{
 
 interface Props {
     id:string,
+    value:string,
     placeholder:string,
     label?:string,
     item:Item[],
@@ -22,9 +23,24 @@ function Combobox(props:Props) {
     const [placeholder, setPlaceholder] = useState<string>(props.item[0].text)
     const [icon, setIcon] = useState("")
 
+    // const [selectValue, setSelectValue] = useState<Item>(null)
+
     useEffect(() => {
         props.label ?
             setPlaceholder(props.item[0].text) : setPlaceholder(props.placeholder)
+
+        props.item.map(value => {
+            if(value.text===props.value){
+                console.log(value)
+                clickFun(value.text, value.icon)
+            }
+        })
+
+        if (props.value){
+            setPlaceholder(props.value)
+        }
+
+
     }, []);
 
     // notify parent component about new value
@@ -57,9 +73,8 @@ function Combobox(props:Props) {
                 className={"min-w-[230px] border rounded-md shadow drop-shadow-4 overflow-hidden" +
                     " flex flex-row items-center justify-between h-[45px] p-5 font-[400]"}>
                 <img src={icon}
-                     className={`w-[100px] 
-                                 ${props.onlyIcon ? "mr-0" : "mr-5"} 
-                                 ${icon ? "block" : "hidden"}`}
+                     className={`w-[100px] ${props.onlyIcon ? "mr-0" : "mr-5"} 
+                     ${icon ? "block" : "hidden"}`}
                      alt={'icon'}
                      title={placeholder}/>
                 <span className={`${icon ? "hidden" : "block"}`}>{placeholder}</span>

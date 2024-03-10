@@ -1,24 +1,30 @@
 import { AiOutlineSwapRight } from "react-icons/ai";
-import {useRef, useState} from "react";
+import {useEffect, useRef, useState} from "react";
 import Input from "../components/input/input.tsx";
 import * as Validator from "../util/validator.ts"
 import * as Msg from "../util/messages.ts"
 import {CiRead} from "react-icons/ci";
 import {EyeOff2Outline} from '@styled-icons/evaicons-outline/EyeOff2Outline'
 import axios from "axios";
+import {useLocation} from "react-router-dom";
+import Cookies from "js-cookie";
 
 function Adduser(){
+
+    let location = useLocation();
+    let user = location?.state?.user;
 
     const fileChooser :any = useRef();
     const imageRef:any = useRef();
     const [profilePic, setProfilePic] = useState<any>(null)
+    const [avatarImage, setAvetarImage] = useState("../src/assets/images/icon/avator.png")
 
     const [firstName, setFirstName] = useState("")
     const [lastName, setLastName] = useState("")
-    const [phoneNumber, setPhoneNumber] = useState("")
-    const [email, setEmail] = useState("")
-    const [role, setRole] = useState("New User")
-    const [username, setUsername] = useState("")
+    const [phoneNumber, setPhoneNumber] = useState(user ? user.phoneNumber : "")
+    const [email, setEmail] = useState(user ? user.email : "")
+    const [role, setRole] = useState(user ? user.role : "New User")
+    const [username, setUsername] = useState(user ? user.username : "")
     const [password, setPassword] = useState("")
     const [rePassword, setRePassword] = useState("")
 
@@ -31,6 +37,16 @@ function Adduser(){
     const [rePasswordValid, setRePasswordValid] = useState(true)
 
     const [validateValues, setValidateValues] = useState(false)
+
+    useEffect(() => {
+        if (user){
+            setAvetarImage(`http://localhost:9000/images/${user.proPic}`)
+
+            let name_array = user.fullName.split(" ");
+            setFirstName(name_array[0])
+            setLastName(name_array[1])
+        }
+    }, []);
 
     function clickProfile(){
         fileChooser.current.click();
@@ -119,7 +135,7 @@ function Adduser(){
 
             const config = {
                 headers: {
-                    'Authorization':'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7Il9pZCI6IjY1YTgwMjg0NTcyMjYxYzMzY2Q2MjkwYyIsInVzZXJuYW1lIjoiVGhhcmluZHVAMTAyIiwiZnVsbE5hbWUiOiJUaGFyaW5kdSBEaGFudXNoa2EiLCJlbWFpbCI6ImRoYW51OTA5YWJAZ21haWwuY29tIiwicGhvbmVOdW1iZXIiOjcwMjAzNzE2OCwicGFzc3dvcmQiOiIiLCJyb2xlIjoiYWRtaW4iLCJwcm9QaWMiOiJwcm9QaWMiLCJfX3YiOjB9LCJpYXQiOjE3MDc5ODUyOTAsImV4cCI6MTcwODU5MDA5MH0.CT_cZad4KBCRx0XMjk3Eugrqci1l0fRjtF94ybRtjpY',
+                    'Authorization': Cookies.get('tk'),
                     'Content-Type': 'multipart/form-data'
                 }
             };
@@ -173,7 +189,7 @@ function Adduser(){
                     <div
                         className={"w-[160px] h-[160px] border border[#E8E8E8] rounded-[50%] flex justify-center items-center"}>
                         <img id={"profilePic"}
-                             src={`${profilePic ? URL.createObjectURL(profilePic) : "src/assets/images/icon/add_user.png"}`}
+                             src={`${profilePic ? URL.createObjectURL(profilePic) : avatarImage}`}
                              alt={"profile"} title={"profile"}
                              className={"w-36 h-[148px] rounded-[50%] bg-[#E8E8E8] cursor-pointer"}
                              onClick={clickProfile}
@@ -222,6 +238,7 @@ function Adduser(){
                             <Input
                                 id={"firstName"}
                                 type={"text"}
+                                value={firstName}
                                 required={true}
                                 callBack={handleInput}
                                 label={"First Name"}
@@ -235,6 +252,7 @@ function Adduser(){
                         <div className={"w-[350px]"}>
                             <Input
                                 id={"lastName"}
+                                value={lastName}
                                 type={"text"}
                                 required={true}
                                 callBack={handleInput}
@@ -253,6 +271,7 @@ function Adduser(){
                             <Input
                                 id={"email"}
                                 type={"text"}
+                                value={email}
                                 required={true}
                                 callBack={handleInput}
                                 label={"Email Address"}
@@ -264,9 +283,16 @@ function Adduser(){
                         </div>
 
                         <div className={"w-[350px]"}>
-                            <Input id={"phoneNumber"} type={"text"} required={true} callBack={handleInput}
-                                   label={"Mobile Number"} placeholder={"Mobile Number"} validate={contactValid}
-                                   message={Msg.contactMsg} borderRequired={true}/>
+                            <Input id={"phoneNumber"}
+                                   value={"0"+phoneNumber}
+                                   type={"text"}
+                                   required={true}
+                                   callBack={handleInput}
+                                   label={"Mobile Number"}
+                                   placeholder={"Mobile Number"}
+                                   validate={contactValid}
+                                   message={Msg.contactMsg}
+                                   borderRequired={true}/>
                         </div>
                     </div>
 
@@ -275,14 +301,28 @@ function Adduser(){
                     <div className={"w-full flex flex-row justify-between flex-wrap mt-2"}>
 
                         <div className={"w-[350px]"}>
-                            <Input id={"username"} type={"text"} required={true} callBack={handleInput}
-                                   label={"Username"} placeholder={"Username"} validate={usernameValid}
-                                   message={Msg.usernameMsg} borderRequired={true}/>
+                            <Input id={"username"}
+                                   value={username}
+                                   type={"text"}
+                                   required={true}
+                                   callBack={handleInput}
+                                   label={"Username"}
+                                   placeholder={"Username"}
+                                   validate={usernameValid}
+                                   message={Msg.usernameMsg}
+                                   borderRequired={true}/>
                         </div>
 
                         <div className={"w-[350px]"}>
-                            <Input id={"role"} type={"tel"} required={true} callBack={handleInput} validate={true}
-                                   label={"User Role"} placeholder={"User Role"} borderRequired={true}/>
+                            <Input id={"role"}
+                                   value={role}
+                                   type={"text"}
+                                   required={true}
+                                   callBack={handleInput}
+                                   validate={true}
+                                   label={"User Role"}
+                                   placeholder={"User Role"}
+                                   borderRequired={true}/>
                         </div>
 
                     </div>
@@ -290,17 +330,35 @@ function Adduser(){
                     <div className={"w-full flex flex-row justify-between flex-wrap mt-2"}>
 
                         <div className={"w-[350px]"}>
-                            <Input id={"password"} type={"password"} required={true} callBack={handleInput}
-                                   label={"Password"} placeholder={"password"} validate={passwordValid}
-                                   passBtn={true} passIcon_1={<CiRead size={20}/>} passIcon_2={<EyeOff2Outline  size={20}/>}
-                                   message={Msg.passwordMsg} borderRequired={true}/>
+                            <Input id={"password"}
+                                   value={password}
+                                   type={"password"}
+                                   required={true}
+                                   callBack={handleInput}
+                                   label={"Password"}
+                                   placeholder={"password"}
+                                   validate={passwordValid}
+                                   passBtn={true}
+                                   passIcon_1={<CiRead size={20}/>}
+                                   passIcon_2={<EyeOff2Outline  size={20}/>}
+                                   message={Msg.passwordMsg}
+                                   borderRequired={true}/>
                         </div>
 
                         <div className={"w-[350px]"}>
-                            <Input id={"rePassword"} type={"password"} required={true} callBack={handleInput}
-                                   label={"Conform Password"} placeholder={"Conform Password"} validate={rePasswordValid}
-                                   passBtn={true} passIcon_1={<CiRead size={20}/>} passIcon_2={<EyeOff2Outline  size={20}/>}
-                                   message={Msg.rePassMsg} borderRequired={true}/>
+                            <Input id={"rePassword"}
+                                   value={rePassword}
+                                   type={"password"}
+                                   required={true}
+                                   callBack={handleInput}
+                                   label={"Conform Password"}
+                                   placeholder={"Conform Password"}
+                                   validate={rePasswordValid}
+                                   passBtn={true}
+                                   passIcon_1={<CiRead size={20}/>}
+                                   passIcon_2={<EyeOff2Outline  size={20}/>}
+                                   message={Msg.rePassMsg}
+                                   borderRequired={true}/>
                         </div>
 
                     </div>

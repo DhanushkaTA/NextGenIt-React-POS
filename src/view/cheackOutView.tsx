@@ -8,10 +8,11 @@ import Combobox from "../components/combobox/combobox.tsx";
 import {IoIosArrowBack, IoIosArrowForward} from "react-icons/io";
 import {IoCard} from "react-icons/io5";
 import { FaMoneyBill1Wave } from "react-icons/fa6";
-// import { BsQrCodeScan } from "react-icons/bs";
 import {ScanTable} from '@styled-icons/fluentui-system-filled/ScanTable'
 import {OrderDto} from "../dto/orderDto.ts";
 import {ItemDetailsDto} from "../dto/itemDetails.dto.ts";
+import Cookies from "js-cookie";
+// import { BsQrCodeScan } from "react-icons/bs";
 
 
 interface BrandData {
@@ -130,7 +131,7 @@ function CheackOutView(){
     async function getFiltredBrands(){
         const config = {
             headers: {
-                'Authorization':'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7Il9pZCI6IjY1YTgwMjg0NTcyMjYxYzMzY2Q2MjkwYyIsInVzZXJuYW1lIjoiVGhhcmluZHVAMTAyIiwiZnVsbE5hbWUiOiJUaGFyaW5kdSBEaGFudXNoa2EiLCJlbWFpbCI6ImRoYW51OTA5YWJAZ21haWwuY29tIiwicGhvbmVOdW1iZXIiOjcwMjAzNzE2OCwicGFzc3dvcmQiOiIiLCJyb2xlIjoiYWRtaW4iLCJwcm9QaWMiOiJwcm9QaWMiLCJfX3YiOjB9LCJpYXQiOjE3MDk0Mzk4ODMsImV4cCI6MTcxMDA0NDY4M30._oBSl4acki4mweDoLuzB4y6C0BERNPtkMWmqyu1ssFU'
+                'Authorization': Cookies.get('tk')
             }
         };
 
@@ -151,7 +152,7 @@ function CheackOutView(){
 
         const config = {
             headers: {
-                'Authorization':'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7Il9pZCI6IjY1YTgwMjg0NTcyMjYxYzMzY2Q2MjkwYyIsInVzZXJuYW1lIjoiVGhhcmluZHVAMTAyIiwiZnVsbE5hbWUiOiJUaGFyaW5kdSBEaGFudXNoa2EiLCJlbWFpbCI6ImRoYW51OTA5YWJAZ21haWwuY29tIiwicGhvbmVOdW1iZXIiOjcwMjAzNzE2OCwicGFzc3dvcmQiOiIiLCJyb2xlIjoiYWRtaW4iLCJwcm9QaWMiOiJwcm9QaWMiLCJfX3YiOjB9LCJpYXQiOjE3MDk0Mzk4ODMsImV4cCI6MTcxMDA0NDY4M30._oBSl4acki4mweDoLuzB4y6C0BERNPtkMWmqyu1ssFU'
+                'Authorization': Cookies.get('tk')
             }
         };
 
@@ -439,20 +440,24 @@ function CheackOutView(){
                     <h1 className={"font-[500] mb-1"}>Bills</h1>
 
                     <div className={`w-full  h-[${billContainerHeight}px] max-h-[${billContainerHeight}px] 
-                    overflow-auto scroll-bar`}>
+                    overflow-auto scroll-bar`} style={{maxHeight:`${billContainerHeight}px`}}>
 
-                        {
+                        <div className={"w-full"}>
+                            {
 
-                            bill_items.map(value => {
-                                return <BillsItem
-                                    item={value.item}
-                                    id={value.item._id}
-                                    qty={value.qty}
-                                    brandPic={value.item.itemPic}
-                                    removeFunction={removeFromCart}
-                                />
-                            })
-                        }
+                                bill_items.map(value => {
+                                    return <BillsItem
+                                        item={value.item}
+                                        id={value.item._id}
+                                        qty={value.qty}
+                                        brandPic={value.item.itemPic}
+                                        removeFunction={removeFromCart}
+                                    />
+                                })
+                            }
+                        </div>
+
+
 
                         {/*<BillsItem/>*/}
                         {/*<BillsItem/>*/}

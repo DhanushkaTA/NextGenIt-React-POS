@@ -22,15 +22,16 @@ function Sidebar(props:Props) {
                 <div className={`h-[8.3%]  p-4 pb-2 flex justify-between items-center ${expanded ? "w-full" : "w-max"}`}>
 
                     <img
-                        src={"src/assets/images/logo/NextGen_Logo.png"}
+                        src={"../src/assets/images/logo/NextGen_Logo.png"}
                         className={` overflow-hidden transition-all 
-                                    ${expanded ? "w-[158px]" : "w-0" }`}/>
+                                    ${expanded ? "w-[158px]" : "w-0" }`} alt={'icon'}/>
 
                     <button
                         onClick={() => setExpandedSide(value => !value)}
                         className={"p-1.5 rounded-lg bg-gray-50 hover:bg-gray-100"}>
                         {/*{!expanded ? <BiCaretRight /> : <BiCaretLeft/> }*/}
-                        {!expanded ? <img src={"src/assets/images/logo/logo-2.png"} width={35} height={24.9}/> : <BiCaretLeft/> }
+                        {!expanded ? <img src={"../src/assets/images/logo/logo-2.png"}
+                                          width={35} height={24.9} alt={'icon'}/> : <BiCaretLeft/> }
                     </button>
 
                 </div>
