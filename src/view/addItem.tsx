@@ -15,7 +15,7 @@ import Alert from "../components/alert/alert.tsx";
 import { CKEditor } from '@ckeditor/ckeditor5-react';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 
-import {useLocation} from "react-router-dom";
+import {useLocation, useNavigate} from "react-router-dom";
 
 //
 // import { Bold, Italic } from '@ckeditor/ckeditor5-basic-styles';
@@ -71,6 +71,8 @@ const AddItem = () =>{
     const [brandList, setBrandList] = useState<BrandData[]>([])
 
     const [brand_list, setBrand_list] = useState(list ? list : [{text:"Select", icon:""}])
+
+    let navigate = useNavigate();
 
     // const brand_list:any[]=[{text:"Select"}]
 
@@ -174,6 +176,14 @@ const AddItem = () =>{
 
     }
 
+    function btnAction(){
+        if (item){
+            updateItem()
+        }else {
+            creatItem();
+        }
+    }
+
     function validateValues() {
 
     }
@@ -228,6 +238,55 @@ const AddItem = () =>{
             // }
 
         }
+
+    }
+
+
+    async function updateItem() {
+
+        const config = {
+            headers: {
+                'Authorization': Cookies.get('tk'),
+                'Content-Type': 'multipart/form-data'
+            }
+        };
+
+        const data = JSON.stringify({
+            "id":item._id,
+            "code": code,
+            "name": productName,
+            "description": description,
+            "category": category,
+            "brand": brand,
+            "regularPrice": regPrice,
+            "salePrice": salePrice,
+            "qty": qty,
+            "warranty": warranty,
+            "stockStatus": true
+        })
+
+        let formData  = new FormData();
+        formData.append('item',data);
+
+        if (productName){
+            formData.append('file',productImage)
+        }
+
+        formData.append('type',"item");
+
+        await axios.put('http://localhost:9000/item/update',formData,config)
+            .then(response => {
+                // alert(response.data.message)
+                // window.location.reload()
+                showAlert('success',response.data.message)
+                setTimeout(function (){navigate("/admin/item")},2001)
+            })
+            .catch(error => {
+                console.log(error)
+                console.log(error.response.data.message)
+
+                showAlert('error',"")
+            })
 
     }
 
@@ -558,7 +617,7 @@ const AddItem = () =>{
                     className={`p-5 w-full h-max flex flex-col md:flex-col lg:flex-row justify-between`}>
 
                     <button
-                        className={"btn btn-create text-[14px] ml-auto"} onClick={creatItem}>
+                        className={"btn btn-create text-[14px] ml-auto"} onClick={btnAction}>
                         <PiSealCheckFill className={"text-white mr-3"}/>
                         Save Item
                     </button>
