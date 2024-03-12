@@ -50,6 +50,7 @@ function Combobox(props:Props) {
         props.callBack(placeholder,props.id)
     }, [placeholder]);
 
+
     function clickFun(text:string, icon:string){
         setPlaceholder(text)
         setIcon(icon)

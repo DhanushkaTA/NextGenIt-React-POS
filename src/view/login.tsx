@@ -18,8 +18,6 @@ function Login() {
 
     const handleSetVisibleBtn = () => {
         if (isVisible){
-            // @ts-ignore
-            // document.getElementById('password').setAttribute("type", "password");
             elementById.setAttribute("type", "password");
             setVisible(false)
         }else {
@@ -57,7 +55,13 @@ function Login() {
             console.log(res.data.data)
             Cookies.set('user', JSON.stringify(res.data.data.user), { expires: 7 })
             Cookies.set('tk',res.data.data.accessToken, { expires: 7 })
-            navigate('/admin')
+
+            if (res.data.data.user.role==='Admin'){
+                navigate('/admin')
+            }else {
+                navigate('/')
+            }
+
 
         }).catch(error => {
             // console.log(error)

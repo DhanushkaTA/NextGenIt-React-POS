@@ -72,6 +72,8 @@ function CheackOutView(){
     const [total, setTotal] = useState(0)
     const [total_qty, setTotal_qty] = useState(0)
 
+    const [searchText, setSearchText] = useState("")
+
     const list:any[]=[{text:"All"}]
 
     useEffect(() => {
@@ -174,6 +176,41 @@ function CheackOutView(){
 
     function handleInput(e:any,name:string){
 
+        let search = e.target.value;
+        console.log(name+" : "+search)
+        setSearchText(e.target.value)
+
+    }
+
+    useEffect(() => {
+
+
+        if (searchText.length<=0){
+            getAllItem()
+        }else {
+            getSearchItem()
+        }
+
+    }, [searchText]);
+
+    async function getSearchItem(){
+
+        const config = {
+            headers: {
+                'Authorization': Cookies.get('tk')
+            }
+        };
+
+        await axios.get(`http://localhost:9000/item/get/search?name=${searchText}`,config)
+            .then(response => {
+
+                console.log(response.data.data)
+                setDataArray(response.data.data)
+
+            })
+            .catch(error => {
+                console.log(error)
+            })
     }
 
     function cmbBoxStates(value:string,id:string){
@@ -320,6 +357,7 @@ function CheackOutView(){
                             <div className={"w-[90%]"}>
                                 <Input
                                     id={"search"}
+                                    value={searchText}
                                     type={"text"}
                                     placeholder={"Search products here..."}
                                     required={false}
@@ -343,6 +381,7 @@ function CheackOutView(){
 
                         <div className={"mr-3"}>
                             <Combobox id={'brands'}
+                                      value={brand}
                                       placeholder={"Select brand"}
                                       label={"Select Brand"}
                                       callBack={cmbBoxStates}
@@ -352,6 +391,7 @@ function CheackOutView(){
 
                         <div className={"mr-3"}>
                             <Combobox id={'category'}
+                                      value={category}
                                       placeholder={"Select Category"}
                                       label={"Select Category"}
                                       callBack={cmbBoxStates}
@@ -361,6 +401,7 @@ function CheackOutView(){
 
                         <div className={"mr-3"}>
                             <Combobox id={'recodes'}
+                                      value={""}
                                       placeholder={"Select Recodes"}
                                       label={"Show Result"}
                                       callBack={cmbBoxStates}
@@ -439,10 +480,12 @@ function CheackOutView(){
                 <div className={"w-full text-3xl bg-teal-00 flex-1"}>
                     <h1 className={"font-[500] mb-1"}>Bills</h1>
 
-                    <div className={`w-full  h-[${billContainerHeight}px] max-h-[${billContainerHeight}px] 
-                    overflow-auto scroll-bar`} style={{maxHeight:`${billContainerHeight}px`}}>
+                    <div
+                        className={`w-full ${bill_items.length < 1 ? 'bg-[url(../src/assets/images/icon/empty_cart.png)]' : null} 
+                        object-fill bg-center bg-cover overflow-auto scroll-bar`}
+                        style={{maxHeight:`${billContainerHeight}px`, height:`${billContainerHeight}px`}}>
 
-                        <div className={"w-full"}>
+                        <div className={"w-full "}>
                             {
 
                                 bill_items.map(value => {

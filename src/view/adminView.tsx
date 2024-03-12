@@ -2,7 +2,7 @@ import SidebarContext from "../context/contexts.ts";
 import Sidebar from "../components/sidebar/sidebar.tsx";
 import SidebarItem from "../components/sidebarItems/sidebarItem.tsx";
 import Header from "../components/header/header.tsx";
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import {FiCpu} from "react-icons/fi";
 import {CiAlignBottom, CiGrid42, CiMicrochip, CiUser} from "react-icons/ci";
 import Cookies from 'js-cookie'
@@ -21,7 +21,17 @@ import {Outlet} from "react-router-dom";
 function AdminView(){
 
     const [expanded, setExpanded] = useState(true)
+    const [username, setUsername] = useState("");
+    const [email, setEmail] = useState("")
+    const [proPic, setProPic] = useState("")
 
+    useEffect(() => {
+        //@ts-ignore
+        let user: string = Cookies.get('user');
+        setUsername(JSON.parse(user).username)
+        setEmail(JSON.parse(user).email)
+        setProPic(JSON.parse(user).proPic)
+    }, []);
 
     function handleSidebar(){
         setExpanded(value => !value)
@@ -88,9 +98,9 @@ function AdminView(){
                 <main id={"main-content"} className={"flex-1 flex flex-col"}>
 
                     <Header
-                        username={`${JSON.parse(Cookies.get('user')).username}`}
-                        email={`${JSON.parse(Cookies.get('user')).email}`}
-                        proPic={`${JSON.parse(Cookies.get('user')).proPic}`}
+                        username={`${username}`}
+                        email={`${email}`}
+                        proPic={`${proPic}`}
                         callBack={handleSidebar}
                     />
 
