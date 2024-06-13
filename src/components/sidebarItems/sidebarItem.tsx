@@ -18,14 +18,14 @@ function SidebarItem(props:Props){
         <Link to={props.navigate} >
             <li id={props.text}
                 className={` min-h-[42px]
-                relative flex items-center py-2 px-3 my-30 " +
+                relative flex items-center py-2 px-3 my-3 " +
                 "font-medium rounded-md cursor-pointer" +
                 "transition-colors group font-Euclid
                 
                 ${props.active ? "bg-gradient-to-tr from-indigo-200 to-indigo-100 text-indigo-800" 
                 : "hover:bg-indigo-50 text-gray-600"} 
                 
-                ${!expanded ? "w-max" : "w-full"} my-[10px] cursor-pointer`}>
+                ${!expanded ? "w-max" : "w-full"} my-[5px] cursor-pointer`}>
                 {props.icon}
 
                 <span className={`overflow-hidden transition-all text-[14px] 

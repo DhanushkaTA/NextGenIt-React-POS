@@ -55,12 +55,25 @@ function ItemView() {
     const [alertType, setAlertType] = useState<string>("")
     const [alertMsg, setAlertMsg] = useState<string>("")
 
+    const [userIdAdmin, setUserIdAdmin] = useState<boolean>(false)
+
     let navigate = useNavigate();
 
     const list:any[]=[{text:"All"}]
 
     useEffect(() => {
-        // getAllBrands()
+
+        let user_string = Cookies.get('user');
+
+        let user = null;
+        if (user_string){
+            user = JSON.parse(user_string)
+
+            if (user.role == 'admin'){
+                setUserIdAdmin(true)
+            }
+        }
+
 
         getAllItem()
 
@@ -112,26 +125,6 @@ function ItemView() {
         setRecodeCount(e.target.value)
     }
 
-    // async function getAllBrands(){
-    //
-    //     const config = {
-    //         headers: {
-    //             'Authorization':'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7Il9pZCI6IjY1YTgwMjg0NTcyMjYxYzMzY2Q2MjkwYyIsInVzZXJuYW1lIjoiVGhhcmluZHVAMTAyIiwiZnVsbE5hbWUiOiJUaGFyaW5kdSBEaGFudXNoa2EiLCJlbWFpbCI6ImRoYW51OTA5YWJAZ21haWwuY29tIiwicGhvbmVOdW1iZXIiOjcwMjAzNzE2OCwicGFzc3dvcmQiOiIiLCJyb2xlIjoiYWRtaW4iLCJwcm9QaWMiOiJwcm9QaWMiLCJfX3YiOjB9LCJpYXQiOjE3MDg2OTA2MzUsImV4cCI6MTcwOTI5NTQzNX0.4XoyJEzi5zfUQFYB4Yl97p9U9KVrgzQErtXPapDRL3U'
-    //         }
-    //     };
-    //
-    //     await axios.get('http://localhost:9000/brand/get/all?size=-1&page=0&category=All',config)
-    //         .then(response => {
-    //
-    //             console.log(response.data.data)
-    //
-    //             setBrandList(response.data.data)
-    //
-    //         })
-    //         .catch(error => {
-    //             alert(error)
-    //         })
-    // }
 
     function getAllItem(){
 
@@ -141,7 +134,9 @@ function ItemView() {
             }
         };
 
-        axios.get(`http://localhost:9000/item/get/all?size=${recodeCount}&page=${pageNumber}&category=${category}&brand=${brand}`,config)
+        axios.get(
+            `http://localhost:9000/item/get/all?size=${recodeCount}&page=${pageNumber}&category=${category}&brand=${brand}`,
+            config)
             .then(response => {
 
                 console.log(response.data.data)
@@ -231,7 +226,6 @@ function ItemView() {
         setAlertOpen(true)
     }
 
-
     // function print(){
     //     console.log(brand+" : "+category)
     //
@@ -247,11 +241,11 @@ function ItemView() {
                 </label>
             </div>
 
-            <Alert open={alertOpen}
-                   type={alertType}
-                   message={alertMsg}
-                   onClose={() => setAlertOpen(false)}
-            />
+            {/*<Alert open={alertOpen}*/}
+            {/*       type={alertType}*/}
+            {/*       message={alertMsg}*/}
+            {/*       onClose={() => setAlertOpen(false)}*/}
+            {/*/>*/}
 
             {/*--------------------------------------------------------------------------------------*/}
 
@@ -283,8 +277,8 @@ function ItemView() {
 
                 <button
                     onClick={() => navigate('/admin/add-item')}
-                    className={"px-3 py-2 bg-[#4455EF] hover:bg-[#2355FF] text-white font-Euclid" +
-                        " flex flex-row items-center cursor-pointer rounded-md"}>
+                    className={`${userIdAdmin ? "block":'hidden'}  px-3 py-2 bg-[#4455EF] hover:bg-[#2355FF] text-white font-Euclid
+                     flex flex-row items-center cursor-pointer rounded-md`}>
                     <CiCirclePlus size={20} className={"mr-2"}/>
 
                     <span>Add Item</span>
@@ -297,8 +291,8 @@ function ItemView() {
                 />
 
                 <Model open={open} onClose={() => setOpen(false)}>
-                    <button className="btn btn-danger w-full" onClick={() => handleDeleteItem()}>Delete</button>
-                    <button className="btn btn-light w-full" onClick={() => setOpen(false)}>Cancel</button>
+                    <button key={'1'} className="btn btn-danger w-full" onClick={() => handleDeleteItem()}>Delete</button>
+                    <button key={'2'} className="btn btn-light w-full" onClick={() => setOpen(false)}>Cancel</button>
                 </Model>
             </div>
 
@@ -326,7 +320,7 @@ function ItemView() {
                             <th className={"py-2 text-left uppercase"}>price</th>
                             <th className={"py-2 text-left uppercase"}>qty</th>
                             <th className={"py-2 text-center uppercase"}>war</th>
-                            <th className={"py-2 text-center"}>ACTION</th>
+                            <th className={`${userIdAdmin ? "block":'hidden'} py-2 text-center`}>ACTION</th>
                         </tr>
                         </thead>
 
@@ -334,9 +328,10 @@ function ItemView() {
 
 
                         {
-                            dataArray.map(value => {
+                            dataArray.map((value,index) => {
 
-                                return <tr className={`${value.qty === 0 ? "bg-red-100/50" : "bg-white"}`}>
+                                return <tr key={index}
+                                           className={`${value.qty === 0 ? "bg-red-100/50" : "bg-white"}`}>
                                     <td className={`flex flex-row items-center border-b `}>
                                         <div>
                                             <img
@@ -369,9 +364,10 @@ function ItemView() {
 
                                     <td className={"font-medium text-[13px] border-b text-center"}>
                                         {
-                                            brandList.map(brand => {
+                                            brandList.map((brand,index) => {
                                                 if (brand.name == value.brand) {
                                                     return <img
+                                                        key={index}
                                                         src={`http://localhost:9000/images/${brand.image}`}
                                                         title={brand.name}
                                                         className={`w-[100px]`}
@@ -394,7 +390,7 @@ function ItemView() {
                                         {value.warranty}
                                     </td>
 
-                                    <td className={" w-[10%] border-b text-center"}>
+                                    <td className={`${userIdAdmin ? "table-cell":'hidden'} w-[10%] border-b text-center`}>
                                         <button
                                             onClick={() => navigate('/admin/add-item', {state:{item:value, list:list}})}
                                             className={"p-1 border border-black rounded-[6px] group" +
@@ -432,11 +428,11 @@ function ItemView() {
                         <select id="recodeLimit"
                                 className={"p-1 w-60px] h-[30px] text-center border border-gray-600 rounded outline-none"}
                                 onChange={(event) => selectRecodCount(event)}>
-                            <option value={10} selected>10</option>
-                            <option value={20}>20</option>
-                            <option value={30}>30</option>
-                            <option value={50}>50</option>
-                            <option value={100}>100</option>
+                            <option key={'1'} value={10} selected>10</option>
+                            <option key={'2'} value={20}>20</option>
+                            <option key={'3'} value={30}>30</option>
+                            <option key={'4'} value={50}>50</option>
+                            <option key={'5'} value={100}>100</option>
                         </select>
                         <label className={"ml-2"}>from <strong>{totalRecodes}</strong> recodes</label>
                     </div>
@@ -444,7 +440,7 @@ function ItemView() {
 
                     <label>Showing <strong>1</strong> of <strong> {totalPages} </strong> results </label>
 
-                    <div className={" flex flex-row items-center justify-center"}>
+                    <div className={` flex flex-row items-center justify-center`}>
                         <button id={"previewBtn"}
                                 className={`p-1 w-[30px] h-[30px] mr-3 rounded-[50%] flex-center hover:bg-gray-200 
                                 ${pageNumber === 1 ? "cursor-not-allowed opacity-35" : "cursor-pointer opacity-100"}`}

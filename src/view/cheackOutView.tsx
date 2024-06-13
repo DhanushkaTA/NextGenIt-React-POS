@@ -349,8 +349,12 @@ function CheackOutView(){
 
                     <div className={"w-full h-max flex flex-row font-Poppins justify-between items-center"}>
 
+                        {/*//////////////  Page Title ///////////////////////*/}
+
                         <strong className={"text-3xl font-[500]"}>Choose Products</strong>
 
+
+                        {/*//////////////  Search Box ///////////////////////*/}
                         <div
                             className={"bg-white w-[25rem] h-[48px] rounded-md flex flex-row items-center justify-between"}>
 
@@ -376,6 +380,8 @@ function CheackOutView(){
                         </div>
 
                     </div>
+
+                    {/*//////////////  Filter Options ///////////////////////*/}
 
                     <div className={"w-max flex flex-row justify-center items-center"}>
 
@@ -410,6 +416,8 @@ function CheackOutView(){
                         </div>
                     </div>
 
+                    {/*//////////////  Pagination Options ///////////////////////*/}
+
                     <div className={"mt-3 font-Poppins flex flex-row w-full justify-between items-end"}>
 
                         <strong className={"text-lg font-[500]"}>All Items</strong>
@@ -441,6 +449,7 @@ function CheackOutView(){
 
                 </div>
 
+                {/*//////////////  Items Container ///////////////////////*/}
 
                 <div
                     className={`w-full h-[445px] max-h-[${itemContainerHeight}px] mt-1 ` +
@@ -451,7 +460,7 @@ function CheackOutView(){
 
 
                         {
-                            dataArray.map(value => {
+                            dataArray.map((value,index) => {
 
                                 let pic='';
 
@@ -461,7 +470,13 @@ function CheackOutView(){
                                     }
                                 })
 
-                                return <Card id={value._id} item={value} brandPic={pic} addFunction={setItemToArray}/>
+                                return <Card
+                                    key={index}
+                                    id={value._id}
+                                    item={value}
+                                    brandPic={pic}
+                                    addFunction={setItemToArray}
+                                />
                             })
                         }
                         {/*<Card/>*/}
@@ -474,6 +489,8 @@ function CheackOutView(){
                 </div>
 
             </div>
+
+            {/*//////////////  Cart/Bill Container ///////////////////////*/}
 
             <div ref={bill_container_1} className={`flex-1 h-[100%] bg-white sticky top-0 right-0 p-3 flex flex-col justify-between font-Poppins`}>
 
@@ -488,8 +505,9 @@ function CheackOutView(){
                         <div className={"w-full "}>
                             {
 
-                                bill_items.map(value => {
+                                bill_items.map((value,index) => {
                                     return <BillsItem
+                                        key={index}
                                         item={value.item}
                                         id={value.item._id}
                                         qty={value.qty}
@@ -499,14 +517,6 @@ function CheackOutView(){
                                 })
                             }
                         </div>
-
-
-
-                        {/*<BillsItem/>*/}
-                        {/*<BillsItem/>*/}
-                        {/*<BillsItem/>*/}
-                        {/*<BillsItem/>*/}
-                        {/*<BillsItem/>*/}
 
                     </div>
 

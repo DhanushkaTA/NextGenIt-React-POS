@@ -13,7 +13,7 @@ function Model(props:Props){
     return(
         //backDrop
         <div  onClick={props.onClose} className={`fixed inset-0 flex justify-center items-center " +
-            "transition-colors ${props.open ? "visible bg-black/20" : "invisible"}`}>
+            "transition-colors ${props.open ? "visible bg-black/20" : "invisible"} z-50`}>
 
 
             {/*model*/}

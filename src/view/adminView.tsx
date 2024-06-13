@@ -4,7 +4,7 @@ import SidebarItem from "../components/sidebarItems/sidebarItem.tsx";
 import Header from "../components/header/header.tsx";
 import {useEffect, useState} from "react";
 import {FiCpu} from "react-icons/fi";
-import {CiAlignBottom, CiGrid42, CiMicrochip, CiUser} from "react-icons/ci";
+import {CiAlignBottom, CiGrid42, CiMicrochip, CiPenpot, CiShop, CiUser, CiViewList} from "react-icons/ci";
 import Cookies from 'js-cookie'
 
 // import CheackOutView from "./cheackOutView.tsx";
@@ -51,15 +51,16 @@ function AdminView(){
                         <Sidebar children={
                             [
                                 <SidebarItem
+                                    key={'1'}
                                     text={"Dashboard"}
                                     // icon={<BiSolidDashboard size={20}/>}
                                     icon={<CiGrid42 size={20}/>}
-                                    navigate={"cart"}
-
+                                    navigate={"admin-dash"}
                                 />,
 
                                 <SidebarItem
-                                    text={"User"}
+                                    key={'2'}
+                                    text={"Manage Users"}
                                     // icon={<BiSolidGroup size={20}/>}
                                     // icon={<FiUsers size={20}/>}
                                     icon={<CiUser size={20}/>}
@@ -68,13 +69,15 @@ function AdminView(){
                                 />,
 
                                 <SidebarItem
+                                    key={'3'}
                                     icon={<CiMicrochip size={20}/>}
-                                    text={"Items"}
+                                    text={"Manage Items"}
                                     navigate={"item"}
                                 />,
 
                                 <SidebarItem
-                                    text={"Report/Add Item"}
+                                    key={'4'}
+                                    text={"Add Item"}
                                     // icon={<BiSolidPieChartAlt2 size={20}/>}
                                     // icon={<CiWavePulse1 size={20}/>}
                                     icon={<CiAlignBottom  size={20}/>}
@@ -84,9 +87,31 @@ function AdminView(){
                                 // <SidebarItem icon={<FiSlack size={20}/>} text={"Items"}/>,
 
                                 <SidebarItem
+                                    key={'5'}
                                     icon={<FiCpu size={20}/>}
                                     text={"Add User"}
                                     navigate={"add-user"}
+                                />,
+
+                                <SidebarItem
+                                    key={'6'}
+                                    icon={<CiViewList size={22}/>}
+                                    text={"Login Details"}
+                                    navigate={"login"}
+                                />,
+
+                                <SidebarItem
+                                    key={'7'}
+                                    icon={<CiShop size={23}/>}
+                                    text={"Place Order"}
+                                    navigate={"cart"}
+                                />,
+
+                                <SidebarItem
+                                    key={'8'}
+                                    icon={<CiPenpot size={22}/>}
+                                    text={"Manage Orders"}
+                                    navigate={"order"}
                                 />
                             ]
                         }/>

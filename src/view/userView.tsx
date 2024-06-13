@@ -132,8 +132,8 @@ function UserView(){
                 </button>
 
                 <Model open={open} onClose={() => setOpen(false)}>
-                    <button className="btn btn-danger w-full" onClick={() => handleDeleteUser()}>Delete</button>
-                    <button className="btn btn-light w-full" onClick={() => setOpen(false)}>Cancel</button>
+                    <button key={'1'} className="btn btn-danger w-full" onClick={() => handleDeleteUser()}>Delete</button>
+                    <button key={'2'} className="btn btn-light w-full" onClick={() => setOpen(false)}>Cancel</button>
                 </Model>
             </div>
 
@@ -159,9 +159,10 @@ function UserView(){
 
                         {
 
-                            dataArray.map(value => {
+                            dataArray.map((value,index) => {
 
-                                return <tr className={"bg-white"}>
+                                return <tr key={index}
+                                           className={"bg-white"}>
                                         <td className={"flex flex-row items-center border-b"}>
                                             <div>
                                                 <img
@@ -229,18 +230,18 @@ function UserView(){
                         <select id="recodeLimit"
                                 className={"p-1 w-60px] h-[30px] text-center border border-gray-600 rounded outline-none"}
                                 onChange={() => selectRecodCount(event)}>
-                            <option value={10} selected>10</option>
-                            <option value={20}>20</option>
-                            <option value={30}>30</option>
-                            <option value={50}>50</option>
-                            <option value={100}>100</option>
+                            <option key={'1'} value={10} selected>10</option>
+                            <option key={'2'} value={20}>20</option>
+                            <option key={'3'} value={30}>30</option>
+                            <option key={'4'} value={50}>50</option>
+                            <option key={'5'} value={100}>100</option>
                         </select>
                     </div>
 
 
                     <label>Showing <strong>1</strong> of <strong> {totalPages} </strong> results </label>
 
-                    <div className={" flex flex-row items-center justify-center"} >
+                    <div className={" flex flex-row items-center justify-center"}>
                         <button id={"previewBtn"}
                                 className={`p-1 w-[30px] h-[30px] mr-3 rounded-[50%] flex-center hover:bg-gray-200 
                                 ${pageNumber === 1 ? "cursor-not-allowed opacity-35" : "cursor-pointer opacity-100"}`}

@@ -2,7 +2,7 @@ import Input from "../components/input/input.tsx";
 import {FcPrivacy, FcReddit} from "react-icons/fc";
 import { HiArrowNarrowRight } from "react-icons/hi";
 import {useState} from "react";
-import axios from "axios";
+import axios, {AxiosResponse} from "axios";
 import Cookies from 'js-cookie'
 import {useNavigate} from "react-router-dom";
 
@@ -56,18 +56,42 @@ function Login() {
             Cookies.set('user', JSON.stringify(res.data.data.user), { expires: 7 })
             Cookies.set('tk',res.data.data.accessToken, { expires: 7 })
 
-            if (res.data.data.user.role==='Admin'){
-                navigate('/admin')
+            //redirect to page
+            if (res.data.data.user.role==='admin'){
+                navigate('/admin/admin-dash')
             }else {
-                navigate('/')
+                navigate('/rec/cart')
             }
 
+            addLoginRecode(res)
 
         }).catch(error => {
             // console.log(error)
             alert(error.response.data.message)
         })
 
+    }
+
+    const addLoginRecode =  (res:AxiosResponse) => {
+
+        const today = new Date()
+
+        const date = today.getFullYear() + '/' + (today.getMonth() + 1) + '/' + today.getDate();
+
+        const requestOptions = {
+            method: 'POST',
+            headers: { 'Authorization': res.data.data.accessToken }
+        };
+        fetch(`http://localhost:9000/login/save?time=${date}`, requestOptions)
+            .then(response => {
+                console.log(response)
+                alert('hari')
+            })
+            .catch(error => {
+                console.log(error)
+                navigate('/')
+                alert("Something went wrong! Please login again.")
+            })
     }
 
     return (

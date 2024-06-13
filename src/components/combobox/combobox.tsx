@@ -102,9 +102,10 @@ function Combobox(props:Props) {
 
 
                 {
-                    props.item.map(value => {
+                    props.item.map((value,index) => {
 
                         return <li
+                            key={index}
                             id={value.text}
                             onClick={() => clickFun(value.text, value.icon)}
                             // onClickCapture={() => props.callBack(value.text, props.id)}

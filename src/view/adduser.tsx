@@ -6,7 +6,7 @@ import * as Msg from "../util/messages.ts"
 import {CiRead} from "react-icons/ci";
 import {EyeOff2Outline} from '@styled-icons/evaicons-outline/EyeOff2Outline'
 import axios from "axios";
-import {useLocation} from "react-router-dom";
+import {useLocation, useNavigate} from "react-router-dom";
 import Cookies from "js-cookie";
 
 function Adduser(){
@@ -38,6 +38,12 @@ function Adduser(){
 
     const [validateValues, setValidateValues] = useState(false)
 
+    const [stateIsUpdate, setStateIsUpdate] = useState(false)
+
+    const [btnText, setBtnText] = useState("Create User")
+
+    let navigate = useNavigate();
+
     useEffect(() => {
         if (user){
             setAvetarImage(`http://localhost:9000/images/${user.proPic}`)
@@ -45,6 +51,9 @@ function Adduser(){
             let name_array = user.fullName.split(" ");
             setFirstName(name_array[0])
             setLastName(name_array[1])
+
+            setStateIsUpdate(true)
+            setBtnText('Update User')
         }
     }, []);
 
@@ -127,43 +136,96 @@ function Adduser(){
         return;
     }
 
+    const cheackValuesForUpdate = () => {
+
+        !Validator.fullNameValidator(firstName) ? setFNameValid(false) :
+            !Validator.fullNameValidator(lastName) ? setLNameValid(false) :
+                !Validator.emailValidator(email) ? setEmailValid(false) :
+                    !Validator.contactValidator(phoneNumber) ? setContactValid(false) :
+                        !Validator.usernameValidator(username) ? setUsernameValid(false) :
+                                    setValidateValues(true);
+        return;
+    }
+
     async function creatUser(){
 
-        cheackValues();
 
-        if (validateValues){
+        const config = {
+            headers: {
+                'Authorization': Cookies.get('tk'),
+                'Content-Type': 'multipart/form-data'
+            }
+        };
 
-            const config = {
-                headers: {
-                    'Authorization': Cookies.get('tk'),
-                    'Content-Type': 'multipart/form-data'
-                }
-            };
+        if(stateIsUpdate){
+            cheackValuesForUpdate()
+            if (validateValues){
+                await updateUserAction(config)
+            }
+        }else {
+            cheackValues();
+            if (validateValues){
+                await createUserAction(config)
+            }
+        }
 
-            const data = JSON.stringify({
-                "username": username,
-                "fullName": firstName+" "+lastName,
-                "email": email,
-                "phoneNumber": phoneNumber,
-                "password": password,
-                "role":  role
+    }
+
+    const createUserAction = async (config:any) => {
+
+
+
+        const data = JSON.stringify({
+            "username": username,
+            "fullName": firstName+" "+lastName,
+            "email": email,
+            "phoneNumber": phoneNumber,
+            "password": password,
+            "role":  role
+        })
+
+        let formData  = new FormData();
+        formData.append('user',data);
+        formData.append('file',profilePic)
+        formData.append('type',"user");
+
+        await axios.post('http://localhost:9000/user/save',formData,config)
+            .then(response => {
+                alert(response.data.message)
+                navigate('/admin/add-user')
+            })
+            .catch(error => {
+                alert(error)
             })
 
-            let formData  = new FormData();
-            formData.append('user',data);
-            formData.append('file',profilePic)
-            formData.append('type',"user");
+    }
 
-            await axios.post('http://localhost:9000/user/save',formData,config)
-                .then(response => {
-                    alert(response.data.message)
-                    window.location.reload();
-                })
-                .catch(error => {
-                    alert(error)
-                })
 
-        }
+    const updateUserAction = async (config:any) => {
+
+        const data = JSON.stringify({
+            "id": user._id,
+            "username": username,
+            "fullName": firstName+" "+lastName,
+            "email": email,
+            "phoneNumber": phoneNumber,
+            "role":  role,
+            "proPic": user.proPic
+        })
+
+        let formData  = new FormData();
+        formData.append('user',data);
+        formData.append('file',profilePic)
+
+        await axios.put('http://localhost:9000/user/update',formData,config)
+            .then(response => {
+                alert(response.data.message)
+                window.location.reload();
+            })
+            .catch(error => {
+                alert(error)
+            })
+
 
     }
 
@@ -284,7 +346,7 @@ function Adduser(){
 
                         <div className={"w-[350px]"}>
                             <Input id={"phoneNumber"}
-                                   value={"0"+phoneNumber}
+                                   value={phoneNumber}
                                    type={"text"}
                                    required={true}
                                    callBack={handleInput}
@@ -327,7 +389,7 @@ function Adduser(){
 
                     </div>
 
-                    <div className={"w-full flex flex-row justify-between flex-wrap mt-2"}>
+                    <div className={`${stateIsUpdate ? "hidden" : "flex"} flex-row w-full justify-between flex-wrap mt-2`}>
 
                         <div className={"w-[350px]"}>
                             <Input id={"password"}
@@ -366,7 +428,7 @@ function Adduser(){
                     <div className={"w-full flex flex-row justify-end flex-wrap mt-3"}>
 
                         <button className={"btn btn-create text-[14px]"} onClick={creatUser}>
-                            Create User
+                            {btnText}
                         </button>
 
                     </div>

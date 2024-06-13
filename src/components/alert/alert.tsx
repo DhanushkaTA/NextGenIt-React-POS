@@ -15,7 +15,7 @@ interface Props{
 
 function Alert(props:Props) {
 
-    let time=setTimeout(props.onClose,2000)
+    let time=setTimeout(props.onClose,4000)
 
     useEffect(() => {
 
@@ -34,6 +34,7 @@ function Alert(props:Props) {
             <img src={
                 `${props.type=='success' ? "../src/assets/images/alert/success-4.png" :
                     props.type=='error' ? "../src/assets/images/alert/error-2.png" : 
+                    props.type=='error_2' ? "../src/assets/images/alert/error-1.png" : 
                         props.type=='warring' ? "../src/assets/images/alert/warring-1.png" : 
                             props.type=="info" ? "../src/assets/images/alert/info-2.png" : "" 
                 }`
