@@ -84,8 +84,12 @@ function Login() {
         };
         fetch(`http://localhost:9000/login/save?time=${date}`, requestOptions)
             .then(response => {
-                console.log(response)
-                alert('hari')
+                //how to access response data in fetch
+                response.json().then(data => {
+                    console.log(data)
+                    //set login id in cookies
+                    Cookies.set('login_id',data.data._id)
+                })
             })
             .catch(error => {
                 console.log(error)

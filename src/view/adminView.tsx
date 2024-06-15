@@ -48,7 +48,9 @@ function AdminView(){
                 <SidebarContext.Provider value={expanded}>
 
                     <aside className={"w-max"}>
-                        <Sidebar children={
+                        <Sidebar
+                            email={email}
+                            children={
                             [
                                 <SidebarItem
                                     key={'1'}

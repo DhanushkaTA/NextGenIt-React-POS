@@ -6,6 +6,8 @@ interface Props{
     onClose:any,
     children:React.ReactNode,
     icon?:any,
+    title?:string,
+    des?:string,
     handleFunction?:Function
 }
 
@@ -13,7 +15,7 @@ function Model(props:Props){
     return(
         //backDrop
         <div  onClick={props.onClose} className={`fixed inset-0 flex justify-center items-center " +
-            "transition-colors ${props.open ? "visible bg-black/20" : "invisible"} z-50`}>
+            "transition-colors ${props.open ? "visible bg-black/20" : "invisible"} z-[9000000]`}>
 
 
             {/*model*/}
@@ -32,15 +34,34 @@ function Model(props:Props){
 
                 <div className={"text-center w-56"}>
 
+                    {/*------------ Alert Icon ------------*/}
 
                     <div className={"mx-auto bg-red-200 rounded-[100%] w-max h-max p-4"}>
-                        <FaTrashAlt size={40} className={"text-red-600"}/>
+                        {
+                            props.icon ?
+                                props.icon :
+                                    <FaTrashAlt size={40} className={"text-red-600"}/>
+                        }
                     </div>
 
                     <div className={"mx-auto my-4 w-48 font-Euclid"}>
-                        <h3 className={"text-lg font-black text-gray-800"}> Conform Delete</h3>
+
+                        {/*------------ Alert Title ------------*/}
+                        <h3 className={"text-lg font-black text-gray-800"}>
+                            {
+                                props.title ?
+                                    props.title :
+                                        "Conform Delete"
+                            }
+                        </h3>
+
+                        {/*------------ Alert Desc ------------*/}
                         <p className={"text-sm text-gray-500"}>
-                            Are you sure you want to delete this user?
+                            {
+                                props.des ?
+                                    props.des :
+                                        'Are you sure you want to delete this user?'
+                            }
                         </p>
                         <div className="flex gap-4 mt-4">
                             {/*<button className="btn btn-danger w-full">Delete</button>*/}
