@@ -5,7 +5,8 @@ interface ItemDetails{
     itemId:string,
     qty:number,
     unitPrice:number
-    amount:number
+    amount:number,
+    pic:string
 }
 
 const DetailsCard :React.FC<ItemDetails> = (props) => {
@@ -21,7 +22,7 @@ const DetailsCard :React.FC<ItemDetails> = (props) => {
 
                 <div className={"h-[100px] mr-2"}>
                     {/*<img src={`http://localhost:8083/${props.brandPic}`}*/}
-                    <img src={`http://localhost:9000/images/Savii99-1705561841014-297211223.jpg`}
+                    <img src={`${props.pic ? `http://localhost:9000/images/${props.pic}` : "http://localhost:9000/images/Savii99-1705561841014-297211223.jpg"}`}
                          title={"product"}
                          alt={"photo"}
                          className={" transition-all rounded-xl h-full w-[100px]"}

@@ -4,13 +4,15 @@ export class ItemDetailsDto {
     private _qty: number;
     private _unitPrice: number;
     private _amount:number;
+    private _pic:string
 
 
-    constructor(itemId: string, qty: number, amount: number, unitPrice: number) {
+    constructor(itemId: string, qty: number, amount: number, unitPrice: number, pic: string) {
         this._itemId = itemId;
         this._qty = qty;
         this._unitPrice = unitPrice;
         this._amount = amount;
+        this._pic = pic
     }
 
 
@@ -46,12 +48,21 @@ export class ItemDetailsDto {
         this._unitPrice = value;
     }
 
+    get pic(): string {
+        return this._pic;
+    }
+
+    set pic(value: string) {
+        this._pic = value;
+    }
+
     toJSON(){
         return {
             itemId:this.itemId,
             qty:this.qty,
             unitPrice:this._unitPrice,
-            amount:this.amount
+            amount:this.amount,
+            pic:this.pic
         }
     }
 }

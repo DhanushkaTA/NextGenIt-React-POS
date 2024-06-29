@@ -311,7 +311,8 @@ function CheackOutView(){
                     value.item._id,
                     value.qty,
                     value.item.salePrice,
-                    value.total
+                    value.total,
+                    value.item.itemPic
                 )
             )
         })
@@ -327,7 +328,22 @@ function CheackOutView(){
 
         console.log(orderDetails)
 
-        alert("clear")
+        const config = {
+            headers: {
+                'Authorization': Cookies.get('tk')
+            }
+        };
+
+        axios.post('http://localhost:9000/order/save',orderDetails,config)
+            .then(res => {
+                alert('Order saved 🎉'+res.data.message)
+            })
+            .catch(error => {
+                console.log(error)
+                alert("order not saved")
+            })
+
+        // alert("clear")
         clearForm()
 
     }

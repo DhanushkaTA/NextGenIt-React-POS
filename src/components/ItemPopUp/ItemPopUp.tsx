@@ -6,7 +6,8 @@ interface ItemList{
     itemId:string,
     qty:number,
     unitPrice:number
-    amount:number
+    amount:number,
+    pic:string
 }
 
 interface Props{
@@ -55,6 +56,7 @@ const ItemPopUp:React.FC<Props> = (props) => {
                                                     amount={value.amount}
                                                     unitPrice={value.unitPrice}
                                                     qty={value.qty}
+                                                    pic={value.pic}
                                 />
 
                             })

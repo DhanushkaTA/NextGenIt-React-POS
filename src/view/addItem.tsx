@@ -619,7 +619,7 @@ const AddItem = () =>{
                     <button
                         className={"btn btn-create text-[14px] ml-auto"} onClick={btnAction}>
                         <PiSealCheckFill className={"text-white mr-3"}/>
-                        Save Item
+                        {item ? "Update Item" : "Save Item"}
                     </button>
 
                 </section>

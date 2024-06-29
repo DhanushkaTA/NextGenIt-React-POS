@@ -12,7 +12,8 @@ export interface OrderDetailsInterface{
     itemId:string,
     qty:number,
     unitPrice:number
-    amount:number
+    amount:number,
+    pic:string
 }
 
 export interface OrderInterface {
