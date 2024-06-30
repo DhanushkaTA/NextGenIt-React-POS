@@ -8,6 +8,7 @@ import {EyeOff2Outline} from '@styled-icons/evaicons-outline/EyeOff2Outline'
 import axios from "axios";
 import {useLocation, useNavigate} from "react-router-dom";
 import Cookies from "js-cookie";
+import Alert from "../components/alert/alert.tsx";
 
 function Adduser(){
 
@@ -41,6 +42,10 @@ function Adduser(){
     const [stateIsUpdate, setStateIsUpdate] = useState(false)
 
     const [btnText, setBtnText] = useState("Create User")
+
+    const [alertOpen, setAlertOpen] = useState<boolean>(false)
+    const [alertType, setAlertType] = useState<string>("")
+    const [alertMsg, setAlertMsg] = useState<string>("")
 
     let navigate = useNavigate();
 
@@ -191,11 +196,13 @@ function Adduser(){
 
         await axios.post('http://localhost:9000/user/save',formData,config)
             .then(response => {
-                alert(response.data.message)
-                navigate('/admin/add-user')
+                // alert(response.data.message)
+                showAlert('success',response.data.message)
+                setTimeout(function (){navigate("/admin/user")},1001)
             })
             .catch(error => {
-                alert(error)
+                // alert(error)
+                showAlert('error',"")
             })
 
     }
@@ -219,19 +226,35 @@ function Adduser(){
 
         await axios.put('http://localhost:9000/user/update',formData,config)
             .then(response => {
-                alert(response.data.message)
-                window.location.reload();
+                // alert(response.data.message)
+                setAvetarImage(`http://localhost:9000/images/${response.data.data.proPic}`)
+                console.log(response.data.data)
+                showAlert('success',response.data.message)
+                setTimeout(function (){navigate('/admin/user')},1001)
+                // window.location.reload();
             })
             .catch(error => {
-                alert(error)
+                showAlert('error',"")
                 console.log(error)
             })
 
 
     }
 
+    function showAlert(type:string,msg:string){
+        setAlertType(type);
+        setAlertMsg(msg);
+        setAlertOpen(true)
+    }
+
     return(
         <section className={"bg-transparent w-full min-h-full flex flex-col"}>
+
+            <Alert open={alertOpen}
+                   type={alertType}
+                   message={alertMsg}
+                   onClose={() => setAlertOpen(false)}
+            />
 
             <h1 className={"text-3xl font-[500] w-full font-Poppins"}>
                 Create a new user
@@ -268,7 +291,7 @@ function Adduser(){
                     {/*bg-[#FFE4DE] text-[#CB5650]*/}
                     <label className={"mt-3.5 text-[12px] font-Euclid px-2 py-1 " +
                         `font-[600] rounded-lg
-                         ${role=="Admin" ? "admin-label" : role=="Reception" ? "reception-label" : "newUser-label"}`}>
+                         ${role=="admin" ? "admin-label" : role=="rec" ? "reception-label" : "newUser-label"}`}>
                         {role}
                     </label>
 

@@ -49,6 +49,10 @@
         @apply text-white bg-red-600 shadow-red-400/40
     }
 
+    .btn.btn-conform {
+        @apply text-white bg-[#0154EE] shadow-blue-400/40
+    }
+
     .btn.btn-create {
         @apply text-white bg-[#00A46D]
     }

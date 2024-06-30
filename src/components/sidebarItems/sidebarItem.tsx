@@ -7,7 +7,8 @@ interface Props{
     text:string,
     active?:any,
     alert?:any,
-    navigate:string
+    navigate:string,
+    callBack:Function
 }
 
 function SidebarItem(props:Props){
@@ -17,6 +18,7 @@ function SidebarItem(props:Props){
     return(
         <Link to={props.navigate} >
             <li id={props.text}
+                onClick={() => props.callBack(props.text)}
                 className={` min-h-[42px]
                 relative flex items-center py-2 px-3 my-3 " +
                 "font-medium rounded-md cursor-pointer" +

@@ -12,6 +12,9 @@ import {ScanTable} from '@styled-icons/fluentui-system-filled/ScanTable'
 import {OrderDto} from "../dto/orderDto.ts";
 import {ItemDetailsDto} from "../dto/itemDetails.dto.ts";
 import Cookies from "js-cookie";
+import Alert from "../components/alert/alert.tsx";
+import Model from "../components/model/model.tsx";
+import {PiBarricadeDuotone} from "react-icons/pi";
 // import { BsQrCodeScan } from "react-icons/bs";
 
 
@@ -73,6 +76,14 @@ function CheackOutView(){
     const [total_qty, setTotal_qty] = useState(0)
 
     const [searchText, setSearchText] = useState("")
+
+    const [alertOpen, setAlertOpen] = useState<boolean>(false)
+    const [alertType, setAlertType] = useState<string>("")
+    const [alertMsg, setAlertMsg] = useState<string>("")
+
+    const [customerId, setCustomerId] = useState<string>("")
+
+    const [open, setOpen] = useState(false)
 
     const list:any[]=[{text:"All"}]
 
@@ -179,7 +190,7 @@ function CheackOutView(){
         let search = e.target.value;
         console.log(name+" : "+search)
         setSearchText(e.target.value)
-
+        setPageNumber(1)
     }
 
     useEffect(() => {
@@ -215,6 +226,7 @@ function CheackOutView(){
 
     function cmbBoxStates(value:string,id:string){
 
+        setPageNumber(1)
         switch (id){
             case 'brands':
                 setBrand(value)
@@ -302,6 +314,8 @@ function CheackOutView(){
 
     function sentOrder(){
 
+        setOpen(false)
+
         let item_array: ItemDetailsDto[] = [];
 
 
@@ -319,33 +333,49 @@ function CheackOutView(){
 
         let orderDetails =
             new OrderDto(
-                new Date().toJSON().slice(0, 10),
+                // new Date().toJSON().slice(0, 10),
+                new Date().toJSON(),
                 total_qty,
                 total,
-                "90771162V",
+                customerId ? customerId : "guest customer",
                 item_array
             )
 
         console.log(orderDetails)
 
-        const config = {
-            headers: {
-                'Authorization': Cookies.get('tk')
-            }
-        };
+        if (total_qty > 0){
+            const config = {
+                headers: {
+                    'Authorization': Cookies.get('tk')
+                }
+            };
 
-        axios.post('http://localhost:9000/order/save',orderDetails,config)
-            .then(res => {
-                alert('Order saved 🎉'+res.data.message)
-            })
-            .catch(error => {
-                console.log(error)
-                alert("order not saved")
-            })
+            axios.post('http://localhost:9000/order/save',orderDetails,config)
+                .then(res => {
+                    // alert('Order saved 🎉'+res.data.message)
+                    showAlert('success',res.data.message)
+                })
+                .catch(error => {
+                    console.log(error)
+                    console.log(error?.response?.data?.message)
+                    showAlert('error_2',"Order not saved")
+                })
+        }else {
+            showAlert('error_2',"Add items to cart, Cart is empty 🛒")
+        }
+
+
 
         // alert("clear")
         clearForm()
+        setCustomerId("")
 
+    }
+
+    function showAlert(type:string,msg:string){
+        setAlertType(type);
+        setAlertMsg(msg);
+        setAlertOpen(true)
     }
 
     function clearForm(){
@@ -355,13 +385,35 @@ function CheackOutView(){
         getAllItem()
     }
 
+    const setCustomer = (e:any, type:string) => {
+        console.log(type)
+        setCustomerId(e.target.value)
+    }
+
 
     return (
         <section className={"relative w-full h-[100%] flex flex-row items-center rounded-md"}>
 
+            <Alert open={alertOpen}
+                   type={alertType}
+                   message={alertMsg}
+                   onClose={() => setAlertOpen(false)}
+            />
+
+            <Model open={open}
+                   icon={<PiBarricadeDuotone />}
+                   title={"Conform"}
+                   des={'Are you sure you want to place this order?'}
+                   color={'blue-400'}
+                   colorBg={"blue-300/50"}
+                   onClose={() => setOpen(false)}>
+                <button key={'1'} className="btn btn-conform w-full" onClick={() => sentOrder()}>Conform</button>
+                <button key={'2'} className="btn btn-light w-full" onClick={() => setOpen(false)}>Cancel</button>
+            </Model>
+
             <div ref={container1} className={`w-[75%] h-[100%] bg-[#F9F8FB] px-3 flex flex-col items-center`}>
 
-                <div ref={container2} className={"h-[167px] w-full flex flex-col"}>
+                <div ref={container2} className={"h-[167px] w-full flex flex-col "}>
 
                     <div className={"w-full h-max flex flex-row font-Poppins justify-between items-center"}>
 
@@ -478,21 +530,24 @@ function CheackOutView(){
                         {
                             dataArray.map((value,index) => {
 
-                                let pic='';
+                                if (value.qty > 0){
+                                    let pic='';
 
-                                brandList.map(brand => {
-                                    if (brand.name == value.brand) {
-                                        pic=`http://localhost:9000/images/${brand.image}`
-                                    }
-                                })
+                                    brandList.map(brand => {
+                                        if (brand.name == value.brand) {
+                                            pic=`http://localhost:9000/images/${brand.image}`
+                                        }
+                                    })
 
-                                return <Card
-                                    key={index}
-                                    id={value._id}
-                                    item={value}
-                                    brandPic={pic}
-                                    addFunction={setItemToArray}
-                                />
+                                    return <Card
+                                        key={index}
+                                        id={value._id}
+                                        item={value}
+                                        brandPic={pic}
+                                        addFunction={setItemToArray}
+                                    />
+                                }
+
                             })
                         }
                         {/*<Card/>*/}
@@ -569,30 +624,41 @@ function CheackOutView(){
 
                     <div className={"w-full"}>
 
-                        <label className={"font-[500] text-sm"}>Payment Method</label>
+                        {/*<label className={"font-[500] text-sm"}>Payment Method</label>*/}
+                        <label className={"font-[500] text-sm"}>Enter Customer Name/ID</label>
 
                         <div className={"w-full flex flex-row items-center justify-between mt-2"}>
 
-                            <div
-                                className={"cursor-pointer bg-blue-100 border border-blue-500 rounded-xl w-1/4 min-h-[50px] text-blue-600 flex flex-col items-center justify-center"}>
-                                <FaMoneyBill1Wave size={20}/>
-                                <p className={"text-[10px]"}>Cash</p>
-                            </div>
-                            <div
-                                className={"cursor-pointer bg-blue-100 border border-blue-500 rounded-xl w-1/4 min-h-[50px] text-blue-600 flex flex-col items-center justify-center"}>
-                                <IoCard size={20}/>
-                                <p className={"text-[10px]"}>Card</p>
-                            </div>
-                            <div
-                                className={"cursor-pointer bg-blue-100 border border-blue-500 rounded-xl w-1/4 min-h-[50px] text-blue-600 flex flex-col items-center justify-center"}>
-                                <ScanTable size={20}/>
-                                <p className={"text-[10px]"}>E-Wallet</p>
-                            </div>
+                            {/*<div*/}
+                            {/*    className={"cursor-pointer bg-blue-100 border border-blue-500 rounded-xl w-1/4 min-h-[50px] text-blue-600 flex flex-col items-center justify-center"}>*/}
+                            {/*    <FaMoneyBill1Wave size={20}/>*/}
+                            {/*    <p className={"text-[10px]"}>Cash</p>*/}
+                            {/*</div>*/}
+                            {/*<div*/}
+                            {/*    className={"cursor-pointer bg-blue-100 border border-blue-500 rounded-xl w-1/4 min-h-[50px] text-blue-600 flex flex-col items-center justify-center"}>*/}
+                            {/*    <IoCard size={20}/>*/}
+                            {/*    <p className={"text-[10px]"}>Card</p>*/}
+                            {/*</div>*/}
+                            {/*<div*/}
+                            {/*    className={"cursor-pointer bg-blue-100 border border-blue-500 rounded-xl w-1/4 min-h-[50px] text-blue-600 flex flex-col items-center justify-center"}>*/}
+                            {/*    <ScanTable size={20}/>*/}
+                            {/*    <p className={"text-[10px]"}>E-Wallet</p>*/}
+                            {/*</div>*/}
+
+                            <Input
+                                id={'customer'}
+                                type={'text'}
+                                value={customerId}
+                                required={false}
+                                borderRequired={true}
+                                callBack={setCustomer}
+                                validate={true}
+                            />
                         </div>
 
                         <div className={"w-full h-max mt-3"}>
                             <button
-                                onClick={sentOrder}
+                                onClick={() => setOpen(true)}
                                 className={"shimmering-button shimmering-button-anime text-white bg-blue-600 text-sm h-10 w-full"}>Make
                                 Payment
                             </button>

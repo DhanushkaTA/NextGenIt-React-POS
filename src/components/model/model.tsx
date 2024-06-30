@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useEffect} from "react";
 import { FaTrashAlt } from "react-icons/fa";
 
 interface Props{
@@ -8,10 +8,16 @@ interface Props{
     icon?:any,
     title?:string,
     des?:string,
+    color?:string,
+    colorBg?:string,
     handleFunction?:Function
 }
 
 function Model(props:Props){
+    useEffect(() => {
+        console.log(props.color)
+        console.log(props.colorBg)
+    }, []);
     return(
         //backDrop
         <div  onClick={props.onClose} className={`fixed inset-0 flex justify-center items-center " +
@@ -35,12 +41,13 @@ function Model(props:Props){
                 <div className={"text-center w-56"}>
 
                     {/*------------ Alert Icon ------------*/}
-
-                    <div className={"mx-auto bg-red-200 rounded-[100%] w-max h-max p-4"}>
+                    {/*${props.colorBg ? `bg-[${props.colorBg}]` : 'bg-red-200'}*/}
+                    <div
+                        className={`mx-auto ${props.colorBg ? `bg-${props.colorBg}` : 'bg-red-200'} rounded-[100%] w-max h-max p-4`}>
                         {
                             props.icon ?
                                 props.icon :
-                                    <FaTrashAlt size={40} className={"text-red-600"}/>
+                                    <FaTrashAlt size={40} className={`${props.color ? `text-[${props.color}]` : 'text-red-600'}`}/>
                         }
                     </div>
 

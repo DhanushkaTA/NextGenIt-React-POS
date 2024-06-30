@@ -72,7 +72,7 @@ function LoginDetailsView() {
         let search = e.target.value;
         console.log(name+" : "+search)
         setSearchText(e.target.value)
-
+        setPageNumber(1)
     }
 
     async function getSearchItem(){

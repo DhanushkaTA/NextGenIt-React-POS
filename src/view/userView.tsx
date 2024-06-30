@@ -5,6 +5,7 @@ import Model from "../components/model/model.tsx";
 import axios from "axios";
 import {useNavigate} from "react-router-dom";
 import Cookies from "js-cookie";
+import Alert from "../components/alert/alert.tsx";
 // import login from "./login.tsx";
 
 interface Data{
@@ -30,6 +31,10 @@ function UserView(){
     const [backBtn, setBackBtn] = useState(true)
 
     const inputRef = useRef(null);
+
+    const [alertOpen, setAlertOpen] = useState<boolean>(false)
+    const [alertType, setAlertType] = useState<string>("")
+    const [alertMsg, setAlertMsg] = useState<string>("")
 
     let navigate = useNavigate();
 
@@ -88,11 +93,11 @@ function UserView(){
 
         axios.delete(`http://localhost:9000/user/delete?id=${deleteId}`,config)
             .then(response => {
-                alert(response.data.message)
+                showAlert('success',response.data.message)
                 getAllUsers()
             })
             .catch(error => {
-                alert(error)
+                showAlert('error_2',"User not deleted!⚠️")
             })
 
         setOpen(false)
@@ -108,8 +113,20 @@ function UserView(){
         setRecodeCount(e.target.value)
     }
 
+    function showAlert(type:string,msg:string){
+        setAlertType(type);
+        setAlertMsg(msg);
+        setAlertOpen(true)
+    }
+
     return (
         <section className={"w-full min-h-[100%] bg-white flex flex-col items-center"}>
+
+            <Alert open={alertOpen}
+                   type={alertType}
+                   message={alertMsg}
+                   onClose={() => setAlertOpen(false)}
+            />
 
             <div className={" w-full h-max px-2 "}>
                 <label className={"font-Euclid text-2xl"}>

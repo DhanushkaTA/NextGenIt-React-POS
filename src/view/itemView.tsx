@@ -177,6 +177,7 @@ function ItemView() {
 
     function cmbBoxStates(value:string,id:string){
 
+        setPageNumber(1)
         switch (id){
             case 'brands':
                 setBrand(value)

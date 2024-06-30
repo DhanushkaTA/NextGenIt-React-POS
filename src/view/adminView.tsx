@@ -25,6 +25,13 @@ function AdminView(){
     const [email, setEmail] = useState("")
     const [proPic, setProPic] = useState("")
 
+    const [dashboardActive, setDashboardActive] = useState<boolean>(true)
+    const [userActive, setUserActive] = useState<boolean>(false)
+    const [itemActive, setItemActive] = useState<boolean>(false)
+    const [addOrderActive, setAddOrderActive] = useState(false)
+    const [orderActive, setOrderActive] = useState(false)
+    const [loginActive, setLoginActive] = useState(false)
+
     useEffect(() => {
         //@ts-ignore
         let user: string = Cookies.get('user');
@@ -35,6 +42,38 @@ function AdminView(){
 
     function handleSidebar(){
         setExpanded(value => !value)
+    }
+
+    const toggleClass = (text:string) => {
+        setFalseAll()
+        switch (true){
+            case "Dashboard":
+                setDashboardActive(true)
+                break;
+            case "Manage Users":
+                setUserActive(true);
+                break;
+            case "Manage Items":
+                setItemActive(true)
+                break;
+            case "Login Details":
+                setLoginActive(true)
+                break;
+            case "Place Order":
+                setAddOrderActive(true)
+                break;
+            case "Manage Orders":
+                setOrderActive(true)
+        }
+    };
+
+    const setFalseAll = () => {
+        setDashboardActive(false)
+        setUserActive(false);
+        setItemActive(false)
+        setLoginActive(false)
+        setAddOrderActive(false)
+        setOrderActive(false)
     }
 
     return (
@@ -58,6 +97,8 @@ function AdminView(){
                                     // icon={<BiSolidDashboard size={20}/>}
                                     icon={<CiGrid42 size={20}/>}
                                     navigate={"admin-dash"}
+                                    active={dashboardActive}
+                                    callBack={toggleClass}
                                 />,
 
                                 <SidebarItem
@@ -66,8 +107,9 @@ function AdminView(){
                                     // icon={<BiSolidGroup size={20}/>}
                                     // icon={<FiUsers size={20}/>}
                                     icon={<CiUser size={20}/>}
-                                    active
+                                    active={userActive}
                                     navigate={"user"}
+                                    callBack={toggleClass}
                                 />,
 
                                 <SidebarItem
@@ -75,31 +117,35 @@ function AdminView(){
                                     icon={<CiMicrochip size={20}/>}
                                     text={"Manage Items"}
                                     navigate={"item"}
+                                    active={itemActive}
+                                    callBack={toggleClass}
                                 />,
 
-                                <SidebarItem
-                                    key={'4'}
-                                    text={"Add Item"}
-                                    // icon={<BiSolidPieChartAlt2 size={20}/>}
-                                    // icon={<CiWavePulse1 size={20}/>}
-                                    icon={<CiAlignBottom  size={20}/>}
-                                    navigate={"add-item"}
-                                />,
-
-                                // <SidebarItem icon={<FiSlack size={20}/>} text={"Items"}/>,
-
-                                <SidebarItem
-                                    key={'5'}
-                                    icon={<FiCpu size={20}/>}
-                                    text={"Add User"}
-                                    navigate={"add-user"}
-                                />,
+                                // <SidebarItem
+                                //     key={'4'}
+                                //     text={"Add Item"}
+                                //     // icon={<BiSolidPieChartAlt2 size={20}/>}
+                                //     // icon={<CiWavePulse1 size={20}/>}
+                                //     icon={<CiAlignBottom  size={20}/>}
+                                //     navigate={"add-item"}
+                                // />,
+                                //
+                                // // <SidebarItem icon={<FiSlack size={20}/>} text={"Items"}/>,
+                                //
+                                // <SidebarItem
+                                //     key={'5'}
+                                //     icon={<FiCpu size={20}/>}
+                                //     text={"Add User"}
+                                //     navigate={"add-user"}
+                                // />,
 
                                 <SidebarItem
                                     key={'6'}
                                     icon={<CiViewList size={22}/>}
                                     text={"Login Details"}
                                     navigate={"login"}
+                                    active={loginActive}
+                                    callBack={toggleClass}
                                 />,
 
                                 <SidebarItem
@@ -107,6 +153,8 @@ function AdminView(){
                                     icon={<CiShop size={23}/>}
                                     text={"Place Order"}
                                     navigate={"cart"}
+                                    active={addOrderActive}
+                                    callBack={toggleClass}
                                 />,
 
                                 <SidebarItem
@@ -114,6 +162,8 @@ function AdminView(){
                                     icon={<CiPenpot size={22}/>}
                                     text={"Manage Orders"}
                                     navigate={"order"}
+                                    active={orderActive}
+                                    callBack={toggleClass}
                                 />
                             ]
                         }/>
