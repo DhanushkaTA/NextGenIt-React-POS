@@ -198,7 +198,7 @@ function LoginDetailsView() {
                                 <th className={"py-2 text-left uppercase "}>role</th>
                                 <th className={"py-2 text-left uppercase "}>login date</th>
                                 <th className={"py-2 text-left uppercase"}>logout date</th>
-                                <th className={"py-2 text-center uppercase"}>action</th>
+                                {/*<th className={"py-2 text-center uppercase"}>action</th>*/}
                             </tr>
                             </thead>
 
@@ -227,27 +227,27 @@ function LoginDetailsView() {
                                             {value.logOutDate}
                                         </td>
 
-                                        <td className={" w-[10%] border-b text-center py-2.5"}>
-                                            <button
-                                                // onClick={() => navigate('/admin/add-item', {
-                                                //     state: {
-                                                //         item: value,
-                                                //         list: list
-                                                //     }
-                                                // })}
-                                                className={"p-1 border border-black rounded-[6px] group" +
-                                                    " hover:border-[#2355FF] mr-3"}>
-                                                <CiEdit size={18} className={"group-hover:text-[#2355FF] "}/>
-                                            </button>
+                                        {/*<td className={" w-[10%] border-b text-center py-2.5"}>*/}
+                                        {/*    <button*/}
+                                        {/*        // onClick={() => navigate('/admin/add-item', {*/}
+                                        {/*        //     state: {*/}
+                                        {/*        //         item: value,*/}
+                                        {/*        //         list: list*/}
+                                        {/*        //     }*/}
+                                        {/*        // })}*/}
+                                        {/*        className={"p-1 border border-black rounded-[6px] group" +*/}
+                                        {/*            " hover:border-[#2355FF] mr-3"}>*/}
+                                        {/*        <CiEdit size={18} className={"group-hover:text-[#2355FF] "}/>*/}
+                                        {/*    </button>*/}
 
-                                            <button
-                                                className={"p-1 border rounded-[6px] group border-red-600 hover:bg-[#F4EBEF]"}
-                                                // onClick={() => clickDeleteBtn(value._id)}
-                                            >
-                                                {/*<CiTrash size={18} className={"group-hover:text-red-600"}/>*/}
-                                                <CiTrash size={18} className={"text-red-600"}/>
-                                            </button>
-                                        </td>
+                                        {/*    <button*/}
+                                        {/*        className={"p-1 border rounded-[6px] group border-red-600 hover:bg-[#F4EBEF]"}*/}
+                                        {/*        // onClick={() => clickDeleteBtn(value._id)}*/}
+                                        {/*    >*/}
+                                        {/*        /!*<CiTrash size={18} className={"group-hover:text-red-600"}/>*!/*/}
+                                        {/*        <CiTrash size={18} className={"text-red-600"}/>*/}
+                                        {/*    </button>*/}
+                                        {/*</td>*/}
 
                                     </tr>
 

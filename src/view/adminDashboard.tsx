@@ -11,7 +11,8 @@ interface Data{
     emptyItemCount: number,
     orderCount: number,
     totalIncome: number,
-    todayTotalAmount: number
+    todayTotalAmount: number,
+    userCount: number
 }
 
 const AdminDashboard: React.FC = () => {
@@ -249,7 +250,7 @@ const AdminDashboard: React.FC = () => {
                                 </div>
 
                                 <div className={'text-white text-xl'}>
-                                    <h1>5</h1>
+                                    <h1>{countedData ? countedData.userCount : 0}</h1>
                                 </div>
                             </div>
 

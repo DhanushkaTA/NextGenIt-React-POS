@@ -35,15 +35,17 @@ const RecView: React.FC = () => {
                 <SidebarContext.Provider value={expanded}>
 
                     <aside className={"w-max"}>
-                        <Sidebar children={
+                        <Sidebar 
+                        email="Hello-Email"
+                        children={
                             [
-                                <SidebarItem
-                                    key={'1'}
-                                    text={"Dashboard"}
-                                    // icon={<BiSolidDashboard size={20}/>}
-                                    icon={<CiGrid42 size={20}/>}
-                                    navigate={"admin-dash"}
-                                />,
+                                // <SidebarItem
+                                //     key={'1'}
+                                //     text={"Dashboard"}
+                                //     // icon={<BiSolidDashboard size={20}/>}
+                                //     icon={<CiGrid42 size={20}/>}
+                                //     navigate={"admin-dash"}
+                                // />,
 
                                 <SidebarItem
                                     key={'3'}

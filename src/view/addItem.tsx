@@ -488,7 +488,7 @@ const AddItem = () =>{
                                     />
 
                                     <button
-                                        className={"w-full h-[40px] bg-[#2A8CF5] rounded-md text-white mt-3"}>
+                                        className={"w-full h-[40px] bg-[#2A8CF5] rounded-md text-white mt-3 hidden"}>
                                         Add brand
                                     </button>
                                 </div>
@@ -510,7 +510,7 @@ const AddItem = () =>{
                                     />
 
                                     <button
-                                        className={"w-full h-[40px] bg-[#2A8CF5] rounded-md text-white mt-3"}>
+                                        className={"w-full h-[40px] bg-[#2A8CF5] rounded-md text-white mt-3 hidden"}>
                                         Add category
                                     </button>
                                 </div>

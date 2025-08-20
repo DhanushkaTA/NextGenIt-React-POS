@@ -334,14 +334,14 @@ const OrderView: React.FC = () => {
                                                 <CiShare1  size={18} className={"group-hover:text-[#2355FF] "}/>
                                             </button>
 
-                                            <button
-                                                className={"p-1 border rounded-[6px] group border-red-600 hover:bg-[#F4EBEF]"}
-                                                // onClick={() => clickDeleteBtn(value._id)}
-                                                onClick={() => clickDeleteBtn("5464867879")}
-                                            >
-                                                {/*<CiTrash size={18} className={"group-hover:text-red-600"}/>*/}
-                                                <CiTrash size={18} className={"text-red-600"}/>
-                                            </button>
+                                            {/*<button*/}
+                                            {/*    className={"p-1 border rounded-[6px] group border-red-600 hover:bg-[#F4EBEF]"}*/}
+                                            {/*    // onClick={() => clickDeleteBtn(value._id)}*/}
+                                            {/*    onClick={() => clickDeleteBtn("5464867879")}*/}
+                                            {/*>*/}
+                                            {/*    /!*<CiTrash size={18} className={"group-hover:text-red-600"}/>*!/*/}
+                                            {/*    <CiTrash size={18} className={"text-red-600"}/>*/}
+                                            {/*</button>*/}
                                         </td>
 
                                     </tr>

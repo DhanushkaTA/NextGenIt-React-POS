@@ -202,6 +202,7 @@ function Adduser(){
             })
             .catch(error => {
                 // alert(error)
+                console.log(error)
                 showAlert('error',"")
             })
 

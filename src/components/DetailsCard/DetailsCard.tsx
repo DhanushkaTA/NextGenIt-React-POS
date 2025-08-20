@@ -74,7 +74,7 @@ const DetailsCard :React.FC<ItemDetails> = (props) => {
                     <button
                         // onClick={deleteCallBackFun}
                         className={"flex items-center justify-center gap-1 text-red-600 text-[12px] " +
-                            "font-Poppins font-[500] px-2 py-1 hover:bg-red-300/20 rounded-[10px]"}>
+                            "font-Poppins font-[500] px-2 py-1 hover:bg-red-300/20 rounded-[10px] hidden"}>
                         <MdDeleteForever string={18}/> Delete
                     </button>
 
